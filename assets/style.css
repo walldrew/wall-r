@@ -313,7 +313,13 @@ footer{background:var(--choc);color:var(--sand);padding:28px 0 20px}
 .ft-outer{display:flex;justify-content:space-between;align-items:stretch;gap:48px;flex-wrap:wrap}
 .ft-navs{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start}
 @media(max-width:700px){.ft-navs{gap:24px}}
-@media(max-width:600px){.ft-outer{flex-direction:column;gap:28px}.ft-brand{flex-direction:row;justify-content:space-between;align-items:flex-end}.ft-copy{max-width:46ch}}
+@media(max-width:600px){
+  .ft-outer{flex-direction:column;gap:24px}
+  .ft-brand{justify-content:flex-start;gap:16px}
+  .ft-navs{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
+  .ft-copy{font-size:10.5px;letter-spacing:.06em}
+  footer{padding:28px 0 20px}
+}
 .ft-brand{display:flex;flex-direction:column;justify-content:space-between;gap:0}
 .ft-logo-wrap{background:var(--ivory);border-radius:var(--r-ctl);padding:14px 18px;display:inline-flex;align-self:flex-start}
 .ft-copy{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--graphite);line-height:1.5}
