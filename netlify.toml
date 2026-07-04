@@ -2,6 +2,46 @@
   publish = "."
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/architects"
+  to = "/architects.html"
+  status = 200
+
+[[redirects]]
+  from = "/developers"
+  to = "/developers.html"
+  status = 200
+
+[[redirects]]
+  from = "/gcs"
+  to = "/gcs.html"
+  status = 200
+
+[[redirects]]
+  from = "/government"
+  to = "/government.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects"
+  to = "/projects.html"
+  status = 200
+
+[[redirects]]
+  from = "/services"
+  to = "/services.html"
+  status = 200
+
+[[redirects]]
+  from = "/technology"
+  to = "/technology.html"
+  status = 200
+
+[[redirects]]
+  from = "/thanks"
+  to = "/thanks.html"
   status = 200
