@@ -73,35 +73,63 @@
 <section><div class="wrap">
   <div class="eyebrow reveal">From file to wall</div>
   <h2 class="reveal">How a print actually runs</h2>
-  <div class="grid g2" style="margin-top:36px">
-    <div class="card reveal"><h3>1. Model and engineer</h3><p style="margin-top:10px">The design
-      is developed against the printable envelope: bead width, radii, cantilever limits, opening
-      details. A licensed engineer letters the wall system for permit.</p></div>
-    <div class="card reveal"><h3>2. Slice and stage</h3><p style="margin-top:10px">The model
-      becomes a toolpath. On site, the machine is set to the slab, the pump is charged, and the
-      mix is dialed to the day's temperature and humidity.</p></div>
-    <div class="card reveal"><h3>3. Print</h3><p style="margin-top:10px">Walls rise in
-      continuous passes with a crew of two to three: one on the machine, one on material, one
-      roving quality. Days, not weeks, from slab to top of wall.</p></div>
-    <div class="card reveal"><h3>4. Integrate</h3><p style="margin-top:10px">Bond beams,
-      reinforcement, and embeds go in as designed. Then the conventional trades take over a
-      shell that is straighter, truer, and already conduit-ready.</p></div>
+  <div style="display:flex;gap:32px;align-items:flex-start;margin-top:36px;flex-wrap:wrap">
+    <div style="flex:1;min-width:260px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card reveal"><h3>1. Model and engineer</h3><p style="margin-top:10px">The design
+        is developed against the printable envelope: bead width, radii, cantilever limits, opening
+        details. A licensed engineer letters the wall system for permit.</p></div>
+      <div class="card reveal"><h3>2. Slice and stage</h3><p style="margin-top:10px">The model
+        becomes a toolpath. On site, the machine is set to the slab, the pump is charged, and the
+        mix is dialed to the day's temperature and humidity.</p></div>
+      <div class="card reveal"><h3>3. Print</h3><p style="margin-top:10px">Walls rise in
+        continuous passes with a crew of two to three: one on the machine, one on material, one
+        roving quality. Days, not weeks, from slab to top of wall.</p></div>
+      <div class="card reveal"><h3>4. Integrate</h3><p style="margin-top:10px">Bond beams,
+        reinforcement, and embeds go in as designed. Then the conventional trades take over a
+        shell that is straighter, truer, and already conduit-ready.</p></div>
+    </div>
+    <!-- Portrait video sidebar -->
+    <div class="reveal" style="flex:0 0 auto;width:240px">
+      <div id="tech-vid-thumb" style="border-radius:8px;overflow:hidden;background:#000;cursor:pointer;position:relative;line-height:0">
+        <video id="tech-vid-inline"
+          playsinline
+          muted
+          preload="metadata"
+          style="width:100%;display:block;object-fit:cover;aspect-ratio:9/16;border-radius:8px"
+          aria-label="3D concrete printing close up">
+          <source src="https://res.cloudinary.com/ufn3pxdn/video/upload/v1783193721/09_-_WhatsApp_Video_2026-06-14_at_14.21.57_prfhig.mp4" type="video/mp4">
+        </video>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+          <div style="width:52px;height:52px;background:rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 20 20"><polygon points="7,4 17,10 7,16" fill="#3A3530"/></svg>
+          </div>
+        </div>
+      </div>
+      <p style="font-family:var(--mono);font-size:11px;color:#8B8578;margin-top:8px;letter-spacing:.08em">CLICK TO EXPAND</p>
+    </div>
   </div>
 </div></section>
 
-<section style="padding-top:0;padding-bottom:0"><div class="wrap" style="max-width:960px">
-  <div class="reveal" style="border-radius:8px;overflow:hidden;background:#000;line-height:0">
-    <video
-      controls
-      playsinline
-      preload="metadata"
-      style="width:100%;display:block;max-height:540px;object-fit:contain;background:#000"
-      aria-label="3D concrete printing in action">
-      <source src="https://res.cloudinary.com/ufn3pxdn/video/upload/v1783193721/09_-_WhatsApp_Video_2026-06-14_at_14.21.57_prfhig.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</div></section>
+<!-- Tech video lightbox -->
+<div id="tech-lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9000;align-items:center;justify-content:center">
+  <button onclick="closeTechLightbox()" style="position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1">&times;</button>
+  <video id="tech-vid-modal" controls playsinline
+    style="max-height:90vh;max-width:90vw;border-radius:8px;display:block">
+    <source src="https://res.cloudinary.com/ufn3pxdn/video/upload/v1783193721/09_-_WhatsApp_Video_2026-06-14_at_14.21.57_prfhig.mp4" type="video/mp4">
+  </video>
+</div>
+<script>
+function closeTechLightbox(){var lb=document.getElementById('tech-lightbox');lb.style.display='none';document.getElementById('tech-vid-modal').pause();}
+document.addEventListener('DOMContentLoaded',function(){
+  var thumb=document.getElementById('tech-vid-thumb');
+  if(thumb)thumb.addEventListener('click',function(){
+    var lb=document.getElementById('tech-lightbox');
+    lb.style.display='flex';
+    document.getElementById('tech-vid-modal').play();
+  });
+  document.getElementById('tech-lightbox').addEventListener('click',function(e){if(e.target===this)closeTechLightbox();});
+});
+</script>
 
 <section class="dark"><div class="wrap">
   <div class="eyebrow reveal">Honest comparison</div>
