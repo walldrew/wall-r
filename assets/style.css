@@ -302,7 +302,7 @@ footer{background:var(--choc);color:var(--sand);padding:28px 0 20px}
 .ft-navs{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start}
 @media(max-width:700px){.ft-navs{gap:28px}}
 .ft-brand{display:flex;flex-direction:column;justify-content:space-between;gap:0}
-.ft-logo-wrap{background:rgba(246,241,228,0.10);border-radius:var(--r-ctl);padding:14px 18px;display:inline-flex;align-self:flex-start}
+.ft-logo-wrap{background:var(--ivory);border-radius:var(--r-ctl);padding:14px 18px;display:inline-flex;align-self:flex-start}
 .ft-copy{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--graphite);line-height:1.5}
 .ft-head{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--sand);margin-bottom:14px;opacity:.7}
