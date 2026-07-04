@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Price Calculator | Wallr</title>
+<meta name="description" content="Planning-level ranges for printed wall packages. Sample pricing only — every project is confirmed with a written quote.">
+<meta property="og:title" content="Price Calculator | Wallr">
+<meta property="og:image" content="assets/img/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Jost:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/img/mark.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="page-calculator">
+<div id="printbar" aria-hidden="true"></div>
+
+<div class="u-head"><div class="wrap">
+  <a href="contact.html">Contact</a>
+  <a href="contact.html">319 Clematis St, Suite 300, West Palm Beach</a>
+  <a class="hot" href="about.html">About Drew Williams</a>
+</div></div>
+<header class="m-head"><div class="wrap">
+  <a class="lockup" href="index.html" aria-label="Wallr home">
+    <img class="mark-img" src="assets/img/mark.png" alt="Wallr mark">
+    <span class="wordmark">Wallr</span></a>
+  <button id="navtoggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <nav class="m-nav" id="mnav" aria-label="Primary">
+    <a href="services.html">Services</a><a href="projects.html">Projects</a><a href="technology.html">Technology</a><a href="gcs.html">GC's</a><a href="architects.html">Architects</a><a href="developers.html">Developers</a>
+    <a class="cta on" href="calculator.html">Price Calculator</a>
+  </nav>
+</div></header>
+
+<section class="page-hero" style="padding-bottom:30px"><div class="wrap">
+  <div class="eyebrow reveal">Price calculator</div>
+  <h1 class="reveal">What would your walls cost?</h1>
+  <p class="lead reveal" style="margin-top:18px;max-width:62ch">Planning-level ranges for printed wall packages. Sample pricing only — every project is confirmed with a written quote. <a href="terms.html" style="color:inherit;text-decoration:underline">See Terms.</a></p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap" style="max-width:1000px">
+  <div class="reveal" style="border-radius:8px;overflow:hidden">
+    <img
+      src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1783194041/WhatsApp_Image_2026-06-14_at_14.21.57_3_ot45hx.jpg"
+      alt="3D printed concrete wall construction"
+      style="width:100%;display:block;max-height:420px;object-fit:cover">
+  </div>
+</div></section>
+
+<section id="calculator"><div class="wrap">
+  <div class="calc reveal" style="margin-top:20px">
+    <div class="fields">
+      <div><label for="c-len">Total wall length (linear ft)</label>
+        <input id="c-len" type="number" min="10" max="5000" value="180"></div>
+      <div><label for="c-h">Wall height (ft)</label>
+        <input id="c-h" type="number" min="3" max="30" value="10"></div>
+      <div><label for="c-sys">Wall system</label>
+        <select id="c-sys">
+          <option value="single">Single-skin structural</option>
+          <option value="double" selected>Double-skin insulated cavity</option>
+          <option value="landscape">Landscape / fence / feature</option>
+        </select></div>
+      <div><label for="c-geo">Geometry</label>
+        <select id="c-geo">
+          <option value="1">Mostly straight</option>
+          <option value="1.15" selected>Curved elements</option>
+          <option value="1.3">Complex / organic</option>
+        </select></div>
+      <div><label for="c-mob">Include mobilization</label>
+        <select id="c-mob"><option value="1" selected>Yes</option><option value="0">No</option></select></div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="btn btn-primary" id="c-run" type="button" style="width:100%">Estimate</button></div>
+    </div>
+    <div class="calc-out">
+      <div><label>Estimated wall package</label>
+        <div class="figure" id="c-fig">$0</div></div>
+      <div><label>Printed area</label>
+        <div class="figure" id="c-area" style="font-size:30px">0 sqft</div></div>
+      <div style="flex:1;min-width:240px">
+        <p class="small muted" id="c-note">Range includes print crew, machine time, and printable material for the wall scope only. Slab, roof, MEP, openings, and finishes by others.</p>
+        <p class="asof" id="c-asof"></p>
+      </div>
+    </div>
+  </div>
+  <p class="small muted reveal" style="margin-top:18px;max-width:70ch">Calculator figures are planning-level samples only and do not constitute an offer, quote, or commitment. Only a written proposal signed by Wallr, LLC constitutes pricing you can rely on. <a href="terms.html">Full terms.</a></p>
+</div></section>
+
+<section class="cta-band dark"><div class="wrap reveal">
+  <h2 style="max-width:24ch">Ready for a real number? Let's talk.</h2>
+  <div class="btn-row">
+    <a class="btn btn-ghost" href="contact.html">Talk to Drew</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div style="display:flex;align-items:center;gap:12px">
+      <img class="mark-img" src="assets/img/mark.png" alt="">
+      <span style="font-family:var(--sans);font-weight:500;font-size:20px;color:var(--ivory)">Wallr</span></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <a href="services.html">Services</a><a href="projects.html">Projects</a>
+      <a href="technology.html">Technology</a><a href="about.html">About</a>
+      <a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+      <a href="https://www.linkedin.com/in/drewdwilliams/" rel="noopener" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+  <p class="fine">&copy; 2026 by Wallr, LLC &middot; Veteran owned &middot; 319 Clematis St, Suite 300, West Palm Beach, FL</p>
+</div></footer>
+<script src="assets/site.js"></script>
+</body></html>

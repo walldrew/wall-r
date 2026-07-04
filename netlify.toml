@@ -12,6 +12,16 @@
   status = 200
 
 [[redirects]]
+  from = "/calculator"
+  to = "/calculator.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
   from = "/developers"
   to = "/developers.html"
   status = 200
@@ -27,6 +37,11 @@
   status = 200
 
 [[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
   from = "/projects"
   to = "/projects.html"
   status = 200
@@ -39,6 +54,11 @@
 [[redirects]]
   from = "/technology"
   to = "/technology.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/terms.html"
   status = 200
 
 [[redirects]]
