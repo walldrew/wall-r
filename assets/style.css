@@ -289,9 +289,9 @@ details.faq p{margin-top:12px}
 
 /* ===== Footer v2: three-column sitemap ===== */
 footer{background:var(--choc);color:var(--sand);padding:56px 0 40px}
-.ft-grid{display:grid;grid-template-columns:1fr 2fr 1fr 1.5fr;gap:40px;align-items:start}
-@media(max-width:900px){.ft-grid{grid-template-columns:1fr 1fr;row-gap:32px}}
-@media(max-width:540px){.ft-grid{grid-template-columns:1fr}}
+.ft-outer{display:flex;justify-content:space-between;align-items:flex-start;gap:48px;flex-wrap:wrap}
+.ft-navs{display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start}
+@media(max-width:700px){.ft-navs{gap:28px}}
 .ft-brand{display:flex;flex-direction:column;gap:12px}
 .ft-head{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--sand);margin-bottom:14px;opacity:.7}
