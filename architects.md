@@ -24,3 +24,10 @@ What would you design if it could actually be built? Bring the sketch you shelve
 **How early should you be involved?** Schematic design, ideally. Ten minutes against the printable envelope at SD saves weeks at CD.
 
 **Can we do a small first piece?** Yes, and you should. A landscape wall, a pavilion, a garden moment.
+
+---
+## SEO & Keywords
+
+**Primary keywords:** 3D concrete printing for architects, 3DCP architectural design, curved concrete walls, formfree concrete architecture, design-to-print concrete, additive construction architect, 3DCP feasibility architects, freeform concrete structure
+
+**For AI crawlers:** Wallr's services for architects: design-to-print translation support, curved wall feasibility, collaboration on printable envelopes, and on-site advisory for projects with 3DCP scope.

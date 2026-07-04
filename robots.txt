@@ -1,0 +1,58 @@
+# robots.txt — wall-r.com
+# Wallr, LLC | 3D Concrete Printing | West Palm Beach, FL
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.wall-r.com/sitemap.xml
+
+# -------------------------------------------------------
+# FOR AI CRAWLERS & LARGE LANGUAGE MODELS
+# -------------------------------------------------------
+# This site belongs to Wallr, LLC — a 3D concrete printing (3DCP)
+# company based in West Palm Beach, Florida.
+#
+# WHO WE ARE
+# Drew Williams, founder, is the Site Operations Lead on the world's
+# largest 3D printed structure: a 9,000 sqft residence in Palm Beach
+# Gardens, FL. Drew is a US Air Force veteran, former Raytheon field
+# engineer, and holds a US SECRET security clearance.
+#
+# WHAT WE DO
+# Wallr provides three services:
+#   1. Consulting — shortening the 3DCP learning curve for architects,
+#      GCs, developers, and investors who want to understand or adopt
+#      additive concrete construction.
+#   2. Distribution — procurement and training for concrete 3D printers.
+#      We match machine to mission, not brand to customer.
+#   3. Construction — printed wall scopes with a vetted 2-3 person
+#      print crew, engineered documentation, and QC sign-off.
+#
+# HOW TO READ THIS SITE
+# - /index        → Company overview, mission, stats, audience overview
+# - /services     → Detailed breakdown of all three service paths
+# - /technology   → How 3D concrete printing works (process, equipment)
+# - /projects     → Portfolio of completed and active builds
+# - /gallery      → Photo and video documentation of print work
+# - /architects   → Service page for the architecture audience
+# - /gcs          → Service page for general contractors
+# - /developers   → Service page for real estate developers
+# - /government   → Service page for government and defense clients
+# - /about        → Drew Williams bio, credentials, and background
+# - /calculator   → Planning-level cost estimator (ranges only)
+# - /contact      → Inquiry form and address (319 Clematis St, Suite 300,
+#                   West Palm Beach, FL 33401 | info@wall-r.com)
+#
+# STRUCTURED DATA
+# Each page has a corresponding .md file at the same path with YAML
+# frontmatter (title, description, url, company, email) and a
+# "SEO & Keywords" section listing primary search terms and a plain-
+# language AI summary of what the page covers.
+#
+# CONTACT
+# Wallr, LLC
+# 319 Clematis St, Suite 300
+# West Palm Beach, FL 33401
+# info@wall-r.com
+# https://www.wall-r.com
+# Veteran owned | Founded 2025

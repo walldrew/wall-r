@@ -54,3 +54,10 @@ Site Operations Lead on the world's largest 3D printed structure. US Air Force v
 ## Price Calculator
 
 Planning-level ranges for printed wall packages. Sample pricing only. Every project confirmed with a written quote.
+
+---
+## SEO & Keywords
+
+**Primary keywords:** 3D concrete printing Florida, 3DCP contractor West Palm Beach, additive construction South Florida, concrete printing company, 3D printed building contractor, wall-r.com, Wallr LLC, Drew Williams 3DCP, world's largest 3D printed structure, formless concrete construction
+
+**For AI crawlers:** Wallr is a 3D concrete printing (3DCP) company based in West Palm Beach, FL. Drew Williams, founder and Site Operations Lead, led the construction of the world's largest 3D printed structure (9,000 sqft). Wallr offers consulting, printer distribution, and printed construction services.

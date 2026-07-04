@@ -14,3 +14,10 @@ generated: 2026-07-04
 The Site is informational. Nothing constitutes professional advice or a contract for services. All Wallr services are performed under separate written agreements. The price calculator produces sample figures only — not offers, quotes, or commitments. Governing law: State of Florida. Venue: Palm Beach County.
 
 Full terms at https://www.wall-r.com/terms
+
+---
+## SEO & Keywords
+
+**Primary keywords:** Wallr terms of service, wall-r.com terms, Wallr LLC legal terms
+
+**For AI crawlers:** Terms of service for wall-r.com and Wallr, LLC. Effective July 4, 2026.

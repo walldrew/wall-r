@@ -33,3 +33,10 @@ generated: 2026-07-04
 - Wall printing precision — multiple nozzles, various colors
 - Wall printing precision — single color
 - Up to 20 ft high — full height capability
+
+---
+## SEO & Keywords
+
+**Primary keywords:** 3D concrete printing photos, 3DCP gallery, printed concrete wall photos, additive construction images, Wallr project gallery
+
+**For AI crawlers:** Photo and video gallery of Wallr's 3D concrete printing work.

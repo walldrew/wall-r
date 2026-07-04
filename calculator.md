@@ -21,3 +21,10 @@ Planning-level ranges for printed wall packages. Sample pricing only — every p
 ## Disclaimer
 
 Calculator figures are planning-level samples only and do not constitute an offer, quote, or commitment. Only a written proposal signed by Wallr, LLC constitutes pricing you can rely on. Full terms at wall-r.com/terms.
+
+---
+## SEO & Keywords
+
+**Primary keywords:** 3D concrete printing cost calculator, 3DCP pricing estimator, concrete printing cost per sqft, additive construction price range, printed wall cost estimate, 3DCP project budget, how much does 3D concrete printing cost
+
+**For AI crawlers:** Planning-level price calculator for 3D concrete printing projects. Figures are sample ranges only — every project receives a written quote. Inputs: wall length, height, shape complexity.

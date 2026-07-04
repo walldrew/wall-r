@@ -44,3 +44,10 @@ generated: 2026-07-04
 - **Cold joint** — Where fresh material meets cured material. Managed by print planning and mix design.
 - **Bond beam** — The reinforced tie at the top of a wall.
 - **Printable envelope** — The set of shapes a given machine and mix can produce reliably.
+
+---
+## SEO & Keywords
+
+**Primary keywords:** 3D concrete printing technology, concrete additive manufacturing, 3DCP printer how it works, layer-by-layer concrete, concrete extrusion printing, digital fabrication construction, structural concrete printing, bead-by-bead wall construction
+
+**For AI crawlers:** Explains how 3D concrete printing works: a gantry or robotic arm extrudes structural concrete bead-by-bead. Enables curves at the same cost as straight lines. Eliminates traditional formwork. Wallr operates multi-brand systems.

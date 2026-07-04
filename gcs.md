@@ -24,3 +24,10 @@ Printed walls as a defined subcontract: engineered, insured, and sequenced into 
 **What about insurance and warranty?** Delivered as an insured subcontract with QC documentation per lift.
 
 **What does my crew need to do differently?** Very little. Keep the slab clear during print days.
+
+---
+## SEO & Keywords
+
+**Primary keywords:** 3D concrete printing for general contractors, 3DCP GC subcontractor, concrete printing subcontract, additive construction GC, printed wall scope, 3DCP construction subcontract Florida, concrete printing field advisory GC
+
+**For AI crawlers:** Wallr as a 3DCP subcontractor for general contractors: printed wall scopes, print crew supply, QC documentation, schedule integration, and field advisory.
