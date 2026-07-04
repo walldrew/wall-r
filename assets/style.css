@@ -222,6 +222,16 @@ footer .mark-img{height:36px}
   text-transform:uppercase;color:var(--taupe)}
 .dark .stat{background:#352C24;border-color:var(--line-inv)}
 .dark .stat b{color:var(--ivory)}.dark .stat span{color:var(--sand)}
+/* Comparison table */
+table{width:100%;border-collapse:collapse;font-size:15px}
+table th,table td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+table thead th{background:var(--choc);color:var(--ivory);font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:.03em}
+table thead th:first-child{border-radius:var(--r-ctl) 0 0 0}
+table thead th:last-child{border-radius:0 var(--r-ctl) 0 0}
+table tbody tr:last-child td{border-bottom:none}
+table tbody tr:nth-child(odd){background:rgba(35,29,24,.03)}
+table tbody td:first-child{font-weight:500;color:var(--taupe);white-space:nowrap}
+@media(max-width:640px){table tbody td:first-child{white-space:normal}}
 details.faq{border-bottom:1px solid var(--line);padding:18px 0}
 details.faq summary{cursor:pointer;font-family:var(--serif);font-size:21px;
   color:var(--ink);list-style:none;display:flex;justify-content:space-between;gap:20px}
