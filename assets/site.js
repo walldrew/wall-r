@@ -85,18 +85,18 @@
       dpr = Math.min(devicePixelRatio || 1, 2);
       cv.width = W * dpr; cv.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      /* Constrain rows to h1 area only */
+      /* Rows start at bottom, animate upward, stop just below h1 */
+      var rowMin = 40;
       var h1el = document.querySelector('#top h1');
-      var rowMax = H;
       if (h1el) {
         var hR = host.getBoundingClientRect();
         var h1R = h1el.getBoundingClientRect();
-        rowMax = Math.min(H, h1R.bottom - hR.top + 24);
-        host.style.clipPath = 'inset(0 0 ' + Math.max(0, H - rowMax) + 'px 0)';
+        rowMin = Math.max(40, h1R.bottom - hR.top + 16);
+        host.style.clipPath = '';
       }
       rows = [];
       var gap = 16;
-      for (var y = rowMax - 8; y > 40; y -= gap) rows.push(y);
+      for (var y = H - 8; y > rowMin; y -= gap) rows.push(y);
     }
     function draw(ts) {
       if (!running) return;
