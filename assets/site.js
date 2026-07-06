@@ -78,7 +78,6 @@
     host.appendChild(cv);
     var ctx = cv.getContext('2d');
     var W = 0, H = 0, dpr = 1, rows = [], t0 = null, running = false, raf = 0, shown = false;
-    var mx = -1e5, my = -1e5;
 
     function build() {
       var r = host.getBoundingClientRect();
@@ -86,9 +85,18 @@
       dpr = Math.min(devicePixelRatio || 1, 2);
       cv.width = W * dpr; cv.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      /* Constrain rows to h1 area only */
+      var h1el = document.querySelector('#top h1');
+      var rowMax = H;
+      if (h1el) {
+        var hR = host.getBoundingClientRect();
+        var h1R = h1el.getBoundingClientRect();
+        rowMax = Math.min(H, h1R.bottom - hR.top + 24);
+        host.style.clipPath = 'inset(0 0 ' + Math.max(0, H - rowMax) + 'px 0)';
+      }
       rows = [];
       var gap = 16;
-      for (var y = H - 8; y > 40; y -= gap) rows.push(y);
+      for (var y = rowMax - 8; y > 40; y -= gap) rows.push(y);
     }
     function draw(ts) {
       if (!running) return;
@@ -111,10 +119,7 @@
         var step = 14;
         for (var x = -20; x <= xEnd; x += step) {
           var wob = Math.sin(x * 0.012 + i * 0.9) * 2.2;
-          var dx = x - mx, dy = y - my;
-          var d2 = dx * dx + dy * dy;
-          var bulge = d2 < 22500 ? (1 - Math.sqrt(d2) / 150) * -14 : 0;
-          var yy = y + wob + bulge;
+          var yy = y + wob;
           if (x === -20) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
         }
         ctx.stroke();
@@ -124,10 +129,6 @@
     function start() { if (!running) { running = true; raf = requestAnimationFrame(draw); } }
     function stop() { running = false; cancelAnimationFrame(raf); }
 
-    addEventListener('pointermove', function (e) {
-      var r = host.getBoundingClientRect();
-      mx = e.clientX - r.left; my = e.clientY - r.top;
-    }, { passive: true });
     new IntersectionObserver(function (es) {
       es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
     }, { threshold: 0.05 }).observe(host);

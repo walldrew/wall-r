@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get an Estimate | Wallr</title>
+<meta name="description" content="Tell us about your project and get a ballpark estimate for 3D concrete printing from Wallr.">
+<meta property="og:title" content="Get an Estimate | Wallr">
+<meta property="og:image" content="assets/img/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Jost:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/img/mark.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="page-contact">
+<div id="printbar" aria-hidden="true"></div>
+
+<div class="u-head"><div class="wrap">
+  <a href="contact.html">Contact</a>
+  <a href="contact.html">319 Clematis St, Suite 300, West Palm Beach</a>
+  <a class="hot" href="about.html">About</a>
+</div></div>
+<header class="m-head"><div class="wrap">
+  <a class="lockup" href="index.html" aria-label="Wallr home">
+    <img class="header-logo" src="assets/img/logo-full.png" alt="Wallr"></a>
+  <button id="navtoggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <nav class="m-nav" id="mnav" aria-label="Primary">
+    <a href="services.html">Services</a><a href="projects.html">Projects</a><a href="technology.html">Technology</a><a href="gcs.html">GC's</a><a href="architects.html">Architects</a><a href="developers.html">Developers</a><a href="gallery.html">Gallery</a>
+    <a class="cta" href="contact.html">Contact Us</a>
+  </nav>
+</div></header>
+
+<section class="page-hero" style="padding-bottom:40px"><div class="wrap">
+  <div class="eyebrow reveal">Project estimate</div>
+  <h1 class="reveal">Tell us about your project</h1>
+  <p class="lead reveal" style="margin-top:18px;max-width:58ch">Share some details and we'll come back with a ballpark range. All estimates are confirmed with a written quote.</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="grid g2" style="margin-top:0;align-items:start">
+    <form class="reveal" name="wallr-estimate" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="website-url">
+      <input type="hidden" name="form-name" value="wallr-estimate">
+      <p class="hp"><label>Leave this empty <input name="website-url"></label></p>
+
+      <div class="f2">
+        <div class="field"><label for="e-first">First name *</label>
+          <input id="e-first" type="text" name="first" required></div>
+        <div class="field"><label for="e-last">Last name</label>
+          <input id="e-last" type="text" name="last"></div>
+      </div>
+
+      <div class="field"><label for="e-email">Email *</label>
+        <input id="e-email" type="email" name="email" required></div>
+
+      <div class="field"><label for="e-phone">Phone</label>
+        <input id="e-phone" type="tel" name="phone"></div>
+
+      <div class="field"><label for="e-type">Project type *</label>
+        <select id="e-type" name="project_type" required>
+          <option value="">Select one</option>
+          <option>Residential new construction</option>
+          <option>Residential addition / renovation</option>
+          <option>Commercial build</option>
+          <option>Landscape / hardscape</option>
+          <option>Government / municipal</option>
+          <option>Other</option>
+        </select></div>
+
+      <div class="f2">
+        <div class="field"><label for="e-len">Approx. wall length (linear ft)</label>
+          <input id="e-len" type="number" name="wall_length_ft" min="1" placeholder="e.g. 200"></div>
+        <div class="field"><label for="e-height">Wall height (ft)</label>
+          <input id="e-height" type="number" name="wall_height_ft" min="1" placeholder="e.g. 10"></div>
+      </div>
+
+      <div class="field"><label for="e-location">Project location (city / state)</label>
+        <input id="e-location" type="text" name="location" placeholder="e.g. Jupiter, FL"></div>
+
+      <div class="field"><label for="e-timeline">Desired timeline</label>
+        <select id="e-timeline" name="timeline">
+          <option value="">Select one</option>
+          <option>As soon as possible</option>
+          <option>3 to 6 months</option>
+          <option>6 to 12 months</option>
+          <option>Still in planning</option>
+        </select></div>
+
+      <div class="field"><label for="e-msg">Additional notes</label>
+        <textarea id="e-msg" name="notes" placeholder="Tell us anything else that would help — terrain, design intent, existing plans, etc."></textarea></div>
+
+      <button class="btn btn-primary" type="submit">Request estimate</button>
+    </form>
+
+    <div class="reveal" style="padding-top:48px">
+      <div class="card">
+        <h3>What happens next</h3>
+        <p style="margin-top:10px">Drew reviews every estimate request personally. You'll hear back within one business day with a planning-level range and any follow-up questions.</p>
+        <p style="margin-top:14px" class="muted">All figures are illustrative until confirmed in a written quote.</p>
+      </div>
+      <div class="card reveal" style="margin-top:20px">
+        <h3>Prefer to talk?</h3>
+        <p style="margin-top:10px">Skip the form and book a free consultation directly.</p>
+        <div class="btn-row" style="margin-top:16px">
+          <!-- Calendly: replace href with Calendly URL when ready -->
+          <a class="btn btn-ghost" href="contact.html" id="calendly-cta-estimate">Book free consultation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<div class="print-divider" aria-hidden="true"></div>
+<footer><div class="wrap">
+  <div class="ft-outer">
+    <div class="ft-brand">
+      <div class="ft-logo-wrap"><img src="assets/img/logo-full.png" alt="Wallr" style="height:54px;width:auto;display:block"></div>
+      <p class="ft-copy">&copy; 2026 by Wallr, LLC &middot; Veteran owned &middot; 319 Clematis St, Suite 300, West Palm Beach, FL</p>
+    </div>
+    <div class="ft-navs">
+      <nav class="ft-nav" aria-label="Site map">
+        <h4 class="ft-head">Site Map</h4>
+        <a href="services.html">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="technology.html">Technology</a>
+        <a href="gcs.html">GC's</a>
+        <a href="architects.html">Architects</a>
+        <a href="developers.html">Developers</a>
+        <a href="gallery.html">Gallery</a>
+      </nav>
+      <nav class="ft-nav" aria-label="Legal">
+        <h4 class="ft-head">Legal</h4>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+      </nav>
+      <nav class="ft-nav" aria-label="Contact and social">
+        <h4 class="ft-head">Contact &amp; Social</h4>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.linkedin.com/in/drewdwilliams/" rel="noopener" target="_blank">LinkedIn</a>
+      </nav>
+    </div>
+  </div>
+</div></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>
