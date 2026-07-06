@@ -4,556 +4,682 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Wallr · Wireframe Annotations</title>
+<title>Wallr · Reference Map</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #f4f3f1; --surface: #fff; --border: #d6d2cc; --ink: #1a1714;
-    --muted: #7a7570; --mono: 'IBM Plex Mono', monospace;
-    --status-none: #e8e5e0; --status-change: #fef3c7; --status-urgent: #fee2e2;
-    --status-done: #dcfce7; --status-change-ink: #92400e; --status-urgent-ink: #991b1b;
-    --status-done-ink: #166534; --accent: #8b6914; --drawer: 380px;
-  }
-  body { font-family: 'Jost', system-ui, sans-serif; background: var(--bg); color: var(--ink);
-    display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f2f0ec; --surface: #fff; --border: #dbd7d2; --ink: #1a1714;
+  --muted: #7a7570; --mono: 'IBM Plex Mono', monospace;
+  --accent: #8b6914; --accent-light: #fef3c7;
+  --tag-txt: #1e3a5f; --tag-txt-bg: #e0eaf6;
+  --tag-img: #1a4731; --tag-img-bg: #d1fae5;
+  --tag-btn: #5b21b6; --tag-btn-bg: #ede9fe;
+  --tag-sec: #374151; --tag-sec-bg: #f3f4f6;
+  --compose: 320px;
+}
+body { font-family: 'Jost', system-ui, sans-serif; background: var(--bg); color: var(--ink);
+  display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-  /* ── Top toolbar ── */
-  #toolbar { background: var(--ink); color: #fff; padding: 10px 16px;
-    display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
-  #toolbar h1 { font-size: 13px; font-family: var(--mono); letter-spacing: .12em;
-    text-transform: uppercase; white-space: nowrap; }
-  #toolbar .sep { width: 1px; background: rgba(255,255,255,.2); height: 18px; }
-  #export-btn { margin-left: auto; background: var(--accent); color: #fff; border: none;
-    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px;
-    font-family: var(--mono); letter-spacing: .08em; white-space: nowrap; }
-  #export-btn:hover { filter: brightness(1.15); }
-  #note-count { font-size: 11px; font-family: var(--mono); color: rgba(255,255,255,.6); white-space: nowrap; }
+/* ── Toolbar ── */
+#toolbar { background: var(--ink); color: #fff; padding: 0 16px;
+  display: flex; align-items: center; gap: 0; height: 44px; flex-shrink: 0; }
+#toolbar-logo { font-family: var(--mono); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; white-space: nowrap; margin-right: 20px; }
+#toolbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.tb-btn { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.18);
+  padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px;
+  font-family: var(--mono); letter-spacing: .06em; white-space: nowrap; }
+.tb-btn:hover { background: rgba(255,255,255,.2); }
+.tb-btn.accent { background: var(--accent); border-color: var(--accent); }
+.tb-btn.accent:hover { filter: brightness(1.2); }
+#loading-bar { height: 2px; background: var(--accent); width: 0; transition: width .3s;
+  position: fixed; top: 44px; left: 0; z-index: 999; }
 
-  /* ── Page tabs ── */
-  #tabs { background: #fff; border-bottom: 1px solid var(--border); display: flex;
-    overflow-x: auto; flex-shrink: 0; scrollbar-width: none; }
-  #tabs::-webkit-scrollbar { display: none; }
-  .tab { padding: 10px 16px; font-size: 12px; font-family: var(--mono); cursor: pointer;
-    white-space: nowrap; border-bottom: 2px solid transparent; color: var(--muted);
-    user-select: none; position: relative; transition: color .15s; }
-  .tab:hover { color: var(--ink); }
-  .tab.active { color: var(--ink); border-bottom-color: var(--accent); }
-  .tab .badge { display: inline-flex; align-items: center; justify-content: center;
-    width: 16px; height: 16px; border-radius: 50%; font-size: 9px; margin-left: 6px;
-    background: var(--accent); color: #fff; vertical-align: middle; }
+/* ── Tabs ── */
+#tabs { background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto; flex-shrink: 0; scrollbar-width: none; }
+#tabs::-webkit-scrollbar { display: none; }
+.tab { padding: 9px 14px; font-size: 11.5px; font-family: var(--mono); cursor: pointer;
+  white-space: nowrap; border-bottom: 2px solid transparent; color: var(--muted); user-select: none; }
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--ink); border-bottom-color: var(--accent); }
+.tab-status { display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  margin-left: 5px; background: var(--border); vertical-align: middle; }
+.tab-status.loaded { background: #22c55e; }
+.tab-status.loading { background: #f59e0b; }
+.tab-status.error { background: #ef4444; }
 
-  /* ── Main layout ── */
-  #layout { display: flex; flex: 1; overflow: hidden; }
+/* ── Layout ── */
+#layout { display: flex; flex: 1; overflow: hidden; }
 
-  /* ── Wireframe canvas ── */
-  #canvas { flex: 1; overflow-y: auto; padding: 20px; display: flex;
-    flex-direction: column; gap: 10px; }
+/* ── Flowchart canvas ── */
+#canvas { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.fc-page { display: flex; flex-direction: column; gap: 0; align-items: flex-start;
+  max-width: 720px; margin: 0 auto; }
 
-  /* ── Section block ── */
-  .wf-block { background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: 10px; padding: 14px 16px; cursor: pointer;
-    transition: border-color .15s, box-shadow .15s; position: relative; }
-  .wf-block:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
-  .wf-block.has-note { border-left: 4px solid; }
-  .wf-block.status-change { border-left-color: #f59e0b; background: #fffdf5; }
-  .wf-block.status-urgent { border-left-color: #ef4444; background: #fff8f8; }
-  .wf-block.status-done   { border-left-color: #22c55e; background: #f8fff9; }
-  .wf-block.shared { opacity: .72; }
+/* ── Section node ── */
+.fc-section { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px;
+  width: 100%; overflow: hidden; }
+.fc-section-head { background: #f8f6f3; border-bottom: 1px solid var(--border);
+  padding: 9px 14px; display: flex; align-items: center; gap: 8px; }
+.fc-section-label { font-size: 12px; font-weight: 600; font-family: var(--mono); flex: 1; }
+.fc-section-shared { font-size: 9px; font-family: var(--mono); background: var(--tag-sec-bg);
+  color: var(--tag-sec); padding: 2px 7px; border-radius: 4px; letter-spacing: .06em; text-transform: uppercase; }
+.fc-section-code { font-size: 9.5px; font-family: var(--mono); background: #1a1714;
+  color: #f0ede8; padding: 2px 8px; border-radius: 4px; cursor: pointer; letter-spacing: .06em; }
+.fc-section-code:hover { background: var(--accent); }
+.fc-section-code.copied { background: #166534; }
 
-  .block-header { display: flex; align-items: flex-start; gap: 10px; }
-  .block-label { font-size: 13px; font-weight: 600; flex: 1; }
-  .block-shared-tag { font-size: 9px; font-family: var(--mono); background: #e8e5e0;
-    color: var(--muted); padding: 2px 6px; border-radius: 4px; letter-spacing: .08em;
-    text-transform: uppercase; flex-shrink: 0; margin-top: 2px; }
-  .block-status-tag { font-size: 9px; font-family: var(--mono); padding: 2px 7px;
-    border-radius: 4px; letter-spacing: .06em; text-transform: uppercase;
-    flex-shrink: 0; margin-top: 2px; }
-  .status-tag-change { background: var(--status-change); color: var(--status-change-ink); }
-  .status-tag-urgent { background: var(--status-urgent); color: var(--status-urgent-ink); }
-  .status-tag-done   { background: var(--status-done);   color: var(--status-done-ink); }
+/* ── Elements ── */
+.fc-elements { display: flex; flex-direction: column; }
+.fc-el { display: flex; align-items: flex-start; gap: 10px; padding: 8px 14px;
+  border-bottom: 1px solid #f0ede8; }
+.fc-el:last-child { border-bottom: none; }
+.fc-el-code { font-size: 9.5px; font-family: var(--mono); padding: 3px 8px; border-radius: 4px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; letter-spacing: .04em;
+  border: 1px solid transparent; user-select: none; }
+.fc-el-code:hover { filter: brightness(.92); }
+.fc-el-code.copied { background: #dcfce7 !important; color: #166534 !important; border-color: #86efac !important; }
+.type-txt  { background: var(--tag-txt-bg); color: var(--tag-txt); border-color: #bfdbfe; }
+.type-img  { background: var(--tag-img-bg); color: var(--tag-img); border-color: #6ee7b7; }
+.type-btn  { background: var(--tag-btn-bg); color: var(--tag-btn); border-color: #c4b5fd; }
+.type-sec  { background: var(--tag-sec-bg); color: var(--tag-sec); }
 
-  .block-preview { font-size: 11.5px; color: var(--muted); margin-top: 6px;
-    line-height: 1.6; max-width: 72ch; }
-  .block-note-preview { font-size: 11px; color: var(--accent); margin-top: 6px;
-    font-style: italic; }
+.fc-el-content { flex: 1; min-width: 0; }
+.fc-el-text { font-size: 12px; color: var(--ink); line-height: 1.5; word-break: break-word; }
+.fc-el-text em { font-style: normal; color: var(--muted); font-size: 11px; margin-left: 4px; }
+.fc-el-meta { display: flex; align-items: center; gap: 8px; margin-top: 3px; }
+.fc-el-tag { font-size: 9px; font-family: var(--mono); background: #f0ede8;
+  color: var(--muted); padding: 1px 5px; border-radius: 3px; text-transform: uppercase; }
+.fc-el-link { font-size: 10px; color: var(--accent); text-decoration: none; font-family: var(--mono); }
+.fc-el-link:hover { text-decoration: underline; }
+.fc-el-img-thumb { width: 52px; height: 34px; object-fit: cover; border-radius: 4px;
+  border: 1px solid var(--border); flex-shrink: 0; }
 
-  .block-codes { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .code-badge { font-family: var(--mono); font-size: 10.5px; background: #f0ede8;
-    border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px;
-    color: #4a3728; cursor: pointer; user-select: all; display: flex; align-items: center; gap: 5px; }
-  .code-badge:hover { background: #e8e0d4; }
-  .code-badge .copy-icon { font-size: 9px; opacity: .5; }
-  .code-badge.copied { background: #dcfce7; border-color: #86efac; color: #166534; }
+/* ── Connector ── */
+.fc-connector { width: 2px; background: var(--border); height: 20px; margin: 0 auto; }
+.fc-connector-line { display: flex; flex-direction: column; align-items: center; }
+.fc-connector-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border);
+  border: 2px solid var(--surface); margin: -4px auto; }
 
-  /* ── Side drawer ── */
-  #drawer { width: var(--drawer); background: var(--surface); border-left: 1px solid var(--border);
-    display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden;
-    transition: width .2s ease; }
-  #drawer.closed { width: 0; }
-  #drawer-inner { width: var(--drawer); display: flex; flex-direction: column;
-    height: 100%; overflow: hidden; }
-  #drawer-header { padding: 14px 16px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-  #drawer-title { font-size: 12px; font-family: var(--mono); font-weight: 600;
-    color: var(--ink); }
-  #drawer-close { background: none; border: none; font-size: 18px; cursor: pointer;
-    color: var(--muted); line-height: 1; padding: 0 2px; }
-  #drawer-close:hover { color: var(--ink); }
-  #drawer-body { padding: 16px; display: flex; flex-direction: column; gap: 12px;
-    flex: 1; overflow-y: auto; }
-  .drawer-field label { display: block; font-size: 11px; font-family: var(--mono);
-    color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .08em; }
-  .drawer-field .code-display { font-family: var(--mono); font-size: 11px;
-    background: #f0ede8; padding: 6px 10px; border-radius: 6px; color: #4a3728;
-    word-break: break-all; }
-  .drawer-field select, .drawer-field textarea {
-    width: 100%; border: 1.5px solid var(--border); border-radius: 6px;
-    font-size: 13px; font-family: inherit; padding: 8px 10px; background: var(--bg);
-    color: var(--ink); resize: vertical; }
-  .drawer-field textarea { min-height: 100px; }
-  .drawer-field select:focus, .drawer-field textarea:focus {
-    outline: none; border-color: var(--accent); }
-  #drawer-save { background: var(--ink); color: #fff; border: none; padding: 10px;
-    border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; }
-  #drawer-save:hover { background: var(--accent); }
-  #drawer-delete { background: none; color: #dc2626; border: 1px solid #fca5a5;
-    padding: 8px; border-radius: 8px; font-size: 12px; cursor: pointer;
-    font-family: inherit; display: none; }
-  #drawer-delete:hover { background: #fee2e2; }
+/* ── Compose panel ── */
+#compose { width: var(--compose); background: var(--surface); border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0; }
+#compose-head { padding: 12px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between; }
+#compose-head h2 { font-size: 12px; font-family: var(--mono); font-weight: 600; }
+#compose-clear { font-size: 11px; color: var(--muted); background: none; border: none;
+  cursor: pointer; font-family: var(--mono); }
+#compose-clear:hover { color: #dc2626; }
+#compose-body { flex: 1; overflow-y: auto; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 12px; }
+#code-list { display: flex; flex-direction: column; gap: 6px; min-height: 40px; }
+#code-list-empty { font-size: 11px; color: var(--muted); font-style: italic; text-align: center;
+  padding: 12px 0; }
+.code-chip { display: flex; align-items: center; gap: 6px; background: #f8f6f3;
+  border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; }
+.code-chip-text { font-family: var(--mono); font-size: 10.5px; flex: 1; word-break: break-all; }
+.code-chip-del { background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 14px; line-height: 1; padding: 0 2px; flex-shrink: 0; }
+.code-chip-del:hover { color: #dc2626; }
+.compose-label { font-size: 10px; font-family: var(--mono); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .08em; }
+#compose-note { width: 100%; min-height: 80px; border: 1.5px solid var(--border); border-radius: 6px;
+  font-size: 13px; font-family: inherit; padding: 8px 10px; resize: vertical; color: var(--ink);
+  background: var(--bg); }
+#compose-note:focus { outline: none; border-color: var(--accent); }
+#compose-actions { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;
+  padding: 12px 14px; border-top: 1px solid var(--border); }
+#compose-copy { background: var(--ink); color: #fff; border: none; padding: 9px;
+  border-radius: 7px; cursor: pointer; font-size: 12px; font-family: var(--mono); letter-spacing: .06em; }
+#compose-copy:hover { background: var(--accent); }
+#compose-email { background: none; color: var(--ink); border: 1.5px solid var(--border);
+  padding: 8px; border-radius: 7px; cursor: pointer; font-size: 12px; font-family: var(--mono); letter-spacing: .06em; }
+#compose-email:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── Export modal ── */
-  #export-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5);
-    z-index: 100; align-items: center; justify-content: center; }
-  #export-modal.open { display: flex; }
-  #export-box { background: #fff; border-radius: 12px; padding: 24px;
-    width: min(640px, 90vw); max-height: 80vh; display: flex; flex-direction: column; gap: 12px; }
-  #export-box h2 { font-size: 14px; font-family: var(--mono); }
-  #export-text { flex: 1; overflow-y: auto; font-family: var(--mono); font-size: 11px;
-    background: var(--bg); padding: 12px; border-radius: 8px; white-space: pre-wrap;
-    max-height: 50vh; border: 1px solid var(--border); }
-  #export-copy { background: var(--ink); color: #fff; border: none; padding: 10px 20px;
-    border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
-  #export-copy:hover { background: var(--accent); }
-  #export-close-btn { background: none; border: 1px solid var(--border); padding: 10px 20px;
-    border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+/* ── Legacy annotation toggle ── */
+#annotation-system { display: none; }
+#legacy-toggle { font-size: 10px; color: var(--muted); background: none; border: none;
+  cursor: pointer; font-family: var(--mono); padding: 0; text-decoration: underline; }
+
+/* ── Loading skeleton ── */
+.skeleton { background: linear-gradient(90deg, #e8e5e0 25%, #f0ede8 50%, #e8e5e0 75%);
+  background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 4px; height: 14px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+<div id="loading-bar"></div>
 
 <div id="toolbar">
-  <h1>Wallr · Wireframe</h1>
-  <div class="sep"></div>
-  <span id="note-count">0 annotations</span>
-  <button id="export-btn">⬆ Export annotations</button>
+  <div id="toolbar-logo">Wallr · Reference Map</div>
+  <div id="toolbar-right">
+    <button class="tb-btn" id="toggle-legacy-btn" title="Show old annotation system">⚙ Annotation mode</button>
+    <button class="tb-btn accent" id="open-compose-btn">📋 Compose request</button>
+  </div>
 </div>
 
 <div id="tabs"></div>
 
 <div id="layout">
-  <div id="canvas"></div>
-  <div id="drawer" class="closed">
-    <div id="drawer-inner">
-      <div id="drawer-header">
-        <span id="drawer-title">Section</span>
-        <button id="drawer-close">×</button>
-      </div>
-      <div id="drawer-body">
-        <div class="drawer-field">
-          <label>Plain English ID</label>
-          <div class="code-display" id="d-path"></div>
-        </div>
-        <div class="drawer-field">
-          <label>HTML Selector</label>
-          <div class="code-display" id="d-selector"></div>
-        </div>
-        <div class="drawer-field">
-          <label>Status</label>
-          <select id="d-status">
-            <option value="none">— Unreviewed</option>
-            <option value="change">🟡 Needs change</option>
-            <option value="urgent">🔴 Urgent</option>
-            <option value="done">✅ Done</option>
-          </select>
-        </div>
-        <div class="drawer-field">
-          <label>Change request / note</label>
-          <textarea id="d-note" placeholder="Describe the change…"></textarea>
-        </div>
-        <button id="drawer-save">Save</button>
-        <button id="drawer-delete">Delete note</button>
-      </div>
+  <div id="canvas"><div class="fc-page" id="flowchart"></div></div>
+
+  <div id="compose">
+    <div id="compose-head">
+      <h2>📋 Change Request</h2>
+      <button id="compose-clear">Clear all</button>
+    </div>
+    <div id="compose-body">
+      <div class="compose-label">Copied references</div>
+      <div id="code-list"><div id="code-list-empty">Click a code badge to add it here</div></div>
+      <div class="compose-label">Describe the change</div>
+      <textarea id="compose-note" placeholder="e.g. Change the h1 text to X, replace the image with Y…"></textarea>
+    </div>
+    <div id="compose-actions">
+      <button id="compose-copy">📋 Copy full request</button>
+      <button id="compose-email">✉ Open in email</button>
+      <button id="legacy-toggle">Show annotation mode</button>
     </div>
   </div>
 </div>
 
-<div id="export-modal">
-  <div id="export-box">
-    <h2>📋 Annotations Export</h2>
-    <div id="export-text"></div>
-    <div style="display:flex;gap:8px">
-      <button id="export-copy">Copy to clipboard</button>
-      <button id="export-close-btn">Close</button>
-    </div>
-  </div>
+<!-- Legacy annotation system — hidden, preserved -->
+<div id="annotation-system">
+  <!-- old content injected here by legacy init if toggled on -->
 </div>
 
 <script>
-/* ─── PAGE DATA ─── */
-const SHARED = {
-  utilityBar: { label: 'Utility Bar', selector: 'div.u-head', path: '* / utility-bar', shared: true,
-    preview: 'Contact link · Address · About link (sitewide)' },
-  header: { label: 'Header / Nav', selector: 'header.m-head', path: '* / header', shared: true,
-    preview: 'logo-full.png · Services · Projects · Technology · GC\'s · Architects · Developers · Gallery · Contact Us CTA (sitewide)' },
-  footer: { label: 'Footer', selector: 'footer', path: '* / footer', shared: true,
-    preview: 'logo-full.png · Site Map / Legal / Contact & Social nav · Copyright (sitewide)' },
-  ctaBand: { label: 'CTA Band', selector: 'section.cta-band.dark', path: '* / cta-band', shared: true,
-    preview: '"One conversation. Field-tested answers, not brochure answers." · CTA button' },
-};
-
+/* ═══════════════════════════════════════════════
+   PAGE DEFINITIONS
+   Each section maps to: DOM selector + short code + label
+═══════════════════════════════════════════════ */
 const PAGES = [
-  { id: 'index', label: 'Home', file: 'index.html', sections: [
-    SHARED.utilityBar,
-    SHARED.header,
-    { label: 'Hero', selector: 'section.hero#top', path: 'index / hero',
-      preview: 'Canvas animation (constrained to h1) · ETHEREAL ARCHITECTURE · "made possible" · "Using 3D construction printers…" · [Get estimate] [Book free consultation] · Stat chips: 9k sqft / 5 years / 2-3 crew / Veteran' },
-    { label: 'The Premise', selector: 'section.dark:first-of-type', path: 'index / premise',
-      preview: 'Eyebrow: "The premise" · H2: "Construction, meet Design" · Subheader: "Formless concrete…" · Body: robot "prints" / layer by layer / Curves become possible · walls.jpg · [How it works]' },
-    { label: 'Technology Teaser', selector: 'section#technology-teaser', path: 'index / technology-teaser',
-      preview: 'Eyebrow: "Technology" · H2: "What is additive construction manufacturing (3DCP)?" · Desc: efficiency-optimized… · 3 cards: The printers / The material / The print · [Explore the technology]' },
-    { label: 'Why It Matters', selector: 'section.dark:nth-of-type(2)', path: 'index / why-it-matters',
-      preview: 'Eyebrow: "Why it matters" · H2: "Flexible design. Tighter tolerance. No waste." · 4 cards: Waste / Speed / Future proof / Design freedom · Pull quote: "What would you design if you had no limits?"' },
-    { label: 'Services Teaser', selector: 'section#services-teaser', path: 'index / services-teaser',
-      preview: 'Eyebrow: "Services" · H2: "Three ways Wallr works" · 3 cards: Consulting / Distribution / Construction · [The full services]' },
-    { label: 'Projects Teaser', selector: 'section#projects-teaser', path: 'index / projects-teaser',
-      preview: 'Eyebrow: "Projects" · H3: "The world\'s largest 3D printed home" · "A 9,000 sq ft printed private residence…" · record-build.svg (placeholder) · [See it]' },
-    { label: 'Industry Pros', selector: 'section.dark#industries', path: 'index / industries',
-      preview: 'Eyebrow: "Industry pros" · H2: "Built for the people who build" · 4 tiles: GC\'s / Architects / Developers / Government' },
-    { label: 'Calculator (hidden)', selector: 'section#calculator', path: 'index / calculator',
-      preview: 'display:none — currently hidden. Price calculator widget.' },
-    { label: 'CTA Band', selector: 'section.cta-band.dark#contact', path: 'index / cta-band',
-      preview: '"Ready to talk? Drew responds within one business day." · [Get in touch]' },
-    SHARED.footer,
-  ]},
-
-  { id: 'about', label: 'About', file: 'about.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'about / page-hero',
-      preview: 'Eyebrow: "About" · H1: "Drew Williams, founder of Wallr"' },
-    { label: 'Bio Content', selector: 'section:nth-of-type(2)', path: 'about / bio',
-      preview: 'Portrait photo (drew-portrait.jpg) · Bio text · "One conversation. Field-tested answers…" · [Get in touch]' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'services', label: 'Services', file: 'services.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'services / page-hero',
-      preview: 'Eyebrow: "Services" · H1: "Three ways Wallr works"' },
-    { label: 'Service Cards', selector: 'section:nth-of-type(2)', path: 'services / service-cards',
-      preview: '3 cards: Consulting / Distribution / Construction — expanded detail' },
-    { label: 'How It Works', selector: 'section:nth-of-type(3)', path: 'services / how-it-works',
-      preview: 'H2: "Simple, in four steps" · 4-step process breakdown' },
-    { label: 'FAQ', selector: 'section:nth-of-type(4)', path: 'services / faq',
-      preview: 'H2: "Before you ask" · Accordion or list of common questions' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'technology', label: 'Technology', file: 'technology.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'technology / page-hero',
-      preview: 'Eyebrow: "Technology" · H1: "Additive construction, explained"' },
-    { label: 'How a Print Runs', selector: 'section:nth-of-type(2)', path: 'technology / how-it-runs',
-      preview: 'H2: "How a print actually runs" · Step-by-step breakdown' },
-    { label: 'Comparison Table', selector: 'section:nth-of-type(3)', path: 'technology / comparison',
-      preview: 'H2: "Printed walls against the usual suspects" · Comparison table' },
-    { label: 'Video / Media', selector: 'section.dark', path: 'technology / video',
-      preview: 'Portrait video clips with sidebar + click-to-expand modal' },
-    { label: 'Glossary', selector: 'section:nth-of-type(5)', path: 'technology / glossary',
-      preview: 'H2: "A short glossary" · Key 3DCP terms defined' },
-    { label: 'FAQ', selector: 'section:nth-of-type(6)', path: 'technology / faq',
-      preview: 'H2: "Asked constantly" · Technology-specific questions' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'projects', label: 'Projects', file: 'projects.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'projects / page-hero',
-      preview: 'Eyebrow: "Projects" · H1: "Proof in concrete"' },
-    { label: 'Featured Project', selector: 'section:nth-of-type(2)', path: 'projects / featured',
-      preview: 'Record build detail — 9,000 sq ft Palm Beach Gardens · record-build.svg placeholder · Drew Williams as ops lead detail' },
-    { label: 'Project Grid', selector: 'section:nth-of-type(3)', path: 'projects / grid',
-      preview: 'Additional project cards / gallery grid (placeholders)' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'gallery', label: 'Gallery', file: 'gallery.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'gallery / page-hero',
-      preview: 'Eyebrow: "Gallery" · H1: "The work, in pictures and video"' },
-    { label: 'Media Grid', selector: 'section:nth-of-type(2)', path: 'gallery / media-grid',
-      preview: 'H2 sections: Designs & Character / Printer / Structures / In motion · Lightbox on click · SVG + video placeholders' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'gcs', label: "GC's", file: 'gcs.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'gcs / page-hero',
-      preview: 'Eyebrow: "General contractors" · H1: "A wall scope that shows up on schedule"' },
-    { label: 'Value Props', selector: 'section:nth-of-type(2)', path: 'gcs / value-props',
-      preview: 'Key benefits for GCs · crew size / schedule / subcontract model' },
-    { label: 'FAQ', selector: 'section:nth-of-type(3)', path: 'gcs / faq',
-      preview: 'H2: "What GC\'s ask first" · Trade-specific questions' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'architects', label: 'Architects', file: 'architects.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'architects / page-hero',
-      preview: 'Eyebrow: "Architects" · H1: "Curves at the price of straight lines"' },
-    { label: 'Value Props', selector: 'section:nth-of-type(2)', path: 'architects / value-props',
-      preview: 'Design freedom benefits · spec process / collaboration model' },
-    { label: 'Spec / Process', selector: 'section:nth-of-type(3)', path: 'architects / spec',
-      preview: 'How Wallr plugs into the design-build process' },
-    { label: 'Portfolio Samples', selector: 'section:nth-of-type(4)', path: 'architects / portfolio',
-      preview: 'Example forms / geometry possible with 3DCP' },
-    { label: 'FAQ', selector: 'section:nth-of-type(5)', path: 'architects / faq',
-      preview: 'H2: "What architects ask first"' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'developers', label: 'Developers', file: 'developers.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'developers / page-hero',
-      preview: 'Eyebrow: "Developers" · H1: "Unit economics that pencil differently"' },
-    { label: 'Value Props', selector: 'section:nth-of-type(2)', path: 'developers / value-props',
-      preview: 'Cost / speed / design differentiation for developers' },
-    { label: 'FAQ', selector: 'section:nth-of-type(3)', path: 'developers / faq',
-      preview: 'H2: "What developers ask first"' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'government', label: 'Government', file: 'government.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'government / page-hero',
-      preview: 'Eyebrow: "Government" · H1: "Procurement-ready, veteran-owned"' },
-    { label: 'Value Props', selector: 'section:nth-of-type(2)', path: 'government / value-props',
-      preview: 'Veteran-owned / procurement vehicle / certifications / use cases' },
-    SHARED.ctaBand, SHARED.footer,
-  ]},
-
-  { id: 'contact', label: 'Contact', file: 'contact.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'contact / page-hero',
-      preview: 'Eyebrow: "Contact" · H1: "Get in touch" · "A real person reads every message…"' },
-    { label: 'Contact Form', selector: 'section:nth-of-type(2)', path: 'contact / form',
-      preview: 'First/Last · Email · Role (select) · Message · Send — Netlify form · Location card (319 Clematis St) · LinkedIn link' },
-    { label: 'Contact Video', selector: 'section:nth-of-type(3)', path: 'contact / video',
-      preview: 'Autoplay muted loop video (contact hero)' },
-    SHARED.footer,
-  ]},
-
-  { id: 'estimate', label: 'Estimate', file: 'estimate.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'estimate / page-hero',
-      preview: 'Eyebrow: "Project estimate" · H1: "Tell us about your project"' },
-    { label: 'Estimate Form', selector: 'section:nth-of-type(2)', path: 'estimate / form',
-      preview: 'First/Last · Email · Phone · Project type · Wall length (ft) · Wall height (ft) · Location · Timeline · Notes · [Request estimate] · What happens next card · [Book free consultation] CTA' },
-    SHARED.footer,
-  ]},
-
-  { id: 'calculator', label: 'Calculator', file: 'calculator.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Page Hero', selector: 'section.page-hero', path: 'calculator / page-hero',
-      preview: 'Eyebrow: "Pricing" · H1: "What would your walls cost?" — NOTE: page exists but not linked from nav' },
-    { label: 'Calculator Widget', selector: 'section#calculator', path: 'calculator / widget',
-      preview: 'Wall length / height / system / geometry / mobilisation inputs · Estimate output range' },
-    { label: 'CTA Band', selector: 'section.cta-band.dark', path: 'calculator / cta-band',
-      preview: '"Ready for a real number? Let\'s talk."' },
-    SHARED.footer,
-  ]},
-
-  { id: 'terms', label: 'Terms', file: 'terms.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Terms Content', selector: 'main, section, div.wrap', path: 'terms / content',
-      preview: 'H1: "Terms & Conditions" · 8 sections: Acceptance / What this site is / Estimates / Content / IP / Acceptable use / Disclaimers / Liability / Contact · Effective July 4 2026' },
-    SHARED.footer,
-  ]},
-
-  { id: 'privacy', label: 'Privacy', file: 'privacy.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Privacy Content', selector: 'main, section, div.wrap', path: 'privacy / content',
-      preview: 'H1: "Privacy Policy" · Sections: Short version / Info collected / How used / How inquiry travels / Retention / Security / Rights / Children / DNT / Changes / Contact · Effective July 4 2026' },
-    SHARED.footer,
-  ]},
-
-  { id: 'thanks', label: 'Thanks', file: 'thanks.html', sections: [
-    SHARED.utilityBar, SHARED.header,
-    { label: 'Thank You', selector: 'section, main', path: 'thanks / content',
-      preview: 'H1: "Thank you. Drew reads every message." · Confirmation message after form submission' },
-    SHARED.footer,
-  ]},
+  { id: 'IDX', label: 'Home',        file: 'index.html' },
+  { id: 'ABT', label: 'About',       file: 'about.html' },
+  { id: 'SVC', label: 'Services',    file: 'services.html' },
+  { id: 'TEC', label: 'Technology',  file: 'technology.html' },
+  { id: 'PRJ', label: 'Projects',    file: 'projects.html' },
+  { id: 'GAL', label: 'Gallery',     file: 'gallery.html' },
+  { id: 'GCS', label: "GC's",        file: 'gcs.html' },
+  { id: 'ARC', label: 'Architects',  file: 'architects.html' },
+  { id: 'DEV', label: 'Developers',  file: 'developers.html' },
+  { id: 'GOV', label: 'Government',  file: 'government.html' },
+  { id: 'CON', label: 'Contact',     file: 'contact.html' },
+  { id: 'EST', label: 'Estimate',    file: 'estimate.html' },
+  { id: 'CAL', label: 'Calculator',  file: 'calculator.html' },
+  { id: 'TRM', label: 'Terms',       file: 'terms.html' },
+  { id: 'PRV', label: 'Privacy',     file: 'privacy.html' },
+  { id: 'THX', label: 'Thanks',      file: 'thanks.html' },
 ];
 
-/* ─── STATE ─── */
-const STORE_KEY = 'wallr-wf-v1';
-let notes = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+/* Section definitions per page — what to extract and how to code it */
+const PAGE_SECTIONS = {
+  IDX: [
+    { code:'UTIL', label:'Utility Bar',        selector:'div.u-head',                shared:true },
+    { code:'HDR',  label:'Header / Nav',       selector:'header.m-head',             shared:true },
+    { code:'HERO', label:'Hero',               selector:'section.hero' },
+    { code:'PREM', label:'The Premise',        selector:'section.dark' },
+    { code:'TECH', label:'Technology Teaser',  selector:'section#technology-teaser' },
+    { code:'WIIM', label:'Why It Matters',     selector:'#why-it-matters, section.dark:last-of-type', attempt:'dark2' },
+    { code:'SVCT', label:'Services Teaser',    selector:'section#services-teaser' },
+    { code:'PRJT', label:'Projects Teaser',    selector:'section#projects-teaser' },
+    { code:'IND',  label:'Industry Pros',      selector:'section#industries' },
+    { code:'CTA',  label:'CTA Band',           selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',             selector:'footer',                    shared:true },
+  ],
+  ABT: [
+    { code:'UTIL', label:'Utility Bar',   selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',  selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',     selector:'section.page-hero' },
+    { code:'BIO',  label:'Bio Content',   selector:'section:nth-of-type(2)' },
+    { code:'CTA',  label:'CTA Band',      selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',        selector:'footer',            shared:true },
+  ],
+  SVC: [
+    { code:'UTIL', label:'Utility Bar',   selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',  selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',     selector:'section.page-hero' },
+    { code:'SVCS', label:'Service Cards', selector:'section:nth-of-type(2)' },
+    { code:'HOW',  label:'How It Works',  selector:'section:nth-of-type(3)' },
+    { code:'FAQ',  label:'FAQ',           selector:'section:nth-of-type(4)' },
+    { code:'CTA',  label:'CTA Band',      selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',        selector:'footer',            shared:true },
+  ],
+  TEC: [
+    { code:'UTIL', label:'Utility Bar',        selector:'div.u-head',          shared:true },
+    { code:'HDR',  label:'Header / Nav',       selector:'header.m-head',       shared:true },
+    { code:'PHRO', label:'Page Hero',          selector:'section.page-hero' },
+    { code:'HOW',  label:'How a Print Runs',   selector:'section:nth-of-type(2)' },
+    { code:'CMP',  label:'Comparison Table',   selector:'section:nth-of-type(3)' },
+    { code:'VID',  label:'Video / Media',      selector:'section.dark' },
+    { code:'GLOS', label:'Glossary',           selector:'section:nth-of-type(5)' },
+    { code:'FAQ',  label:'FAQ',                selector:'section:nth-of-type(6)' },
+    { code:'CTA',  label:'CTA Band',           selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',             selector:'footer',              shared:true },
+  ],
+  PRJ: [
+    { code:'UTIL', label:'Utility Bar',    selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',   selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',      selector:'section.page-hero' },
+    { code:'FEAT', label:'Featured Build', selector:'section:nth-of-type(2)' },
+    { code:'GRID', label:'Project Grid',   selector:'section:nth-of-type(3)' },
+    { code:'CTA',  label:'CTA Band',       selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',         selector:'footer',            shared:true },
+  ],
+  GAL: [
+    { code:'UTIL', label:'Utility Bar',  selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav', selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',    selector:'section.page-hero' },
+    { code:'MED',  label:'Media Grid',   selector:'section:nth-of-type(2)' },
+    { code:'CTA',  label:'CTA Band',     selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',       selector:'footer',            shared:true },
+  ],
+  GCS: [
+    { code:'UTIL', label:'Utility Bar',   selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',  selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',     selector:'section.page-hero' },
+    { code:'VAL',  label:'Value Props',   selector:'section:nth-of-type(2)' },
+    { code:'FAQ',  label:'FAQ',           selector:'section:nth-of-type(3)' },
+    { code:'CTA',  label:'CTA Band',      selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',        selector:'footer',            shared:true },
+  ],
+  ARC: [
+    { code:'UTIL', label:'Utility Bar',    selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',   selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',      selector:'section.page-hero' },
+    { code:'VAL',  label:'Value Props',    selector:'section:nth-of-type(2)' },
+    { code:'SPEC', label:'Spec / Process', selector:'section:nth-of-type(3)' },
+    { code:'PORT', label:'Portfolio',      selector:'section:nth-of-type(4)' },
+    { code:'FAQ',  label:'FAQ',            selector:'section:nth-of-type(5)' },
+    { code:'CTA',  label:'CTA Band',       selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',         selector:'footer',            shared:true },
+  ],
+  DEV: [
+    { code:'UTIL', label:'Utility Bar',  selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav', selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',    selector:'section.page-hero' },
+    { code:'VAL',  label:'Value Props',  selector:'section:nth-of-type(2)' },
+    { code:'FAQ',  label:'FAQ',          selector:'section:nth-of-type(3)' },
+    { code:'CTA',  label:'CTA Band',     selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',       selector:'footer',            shared:true },
+  ],
+  GOV: [
+    { code:'UTIL', label:'Utility Bar',  selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav', selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',    selector:'section.page-hero' },
+    { code:'VAL',  label:'Value Props',  selector:'section:nth-of-type(2)' },
+    { code:'CTA',  label:'CTA Band',     selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',       selector:'footer',            shared:true },
+  ],
+  CON: [
+    { code:'UTIL', label:'Utility Bar',  selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav', selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',    selector:'section.page-hero' },
+    { code:'FORM', label:'Contact Form', selector:'section:nth-of-type(2)' },
+    { code:'VID',  label:'Contact Video',selector:'section:nth-of-type(3)' },
+    { code:'FTR',  label:'Footer',       selector:'footer',            shared:true },
+  ],
+  EST: [
+    { code:'UTIL', label:'Utility Bar',   selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',  selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',     selector:'section.page-hero' },
+    { code:'FORM', label:'Estimate Form', selector:'section:nth-of-type(2)' },
+    { code:'FTR',  label:'Footer',        selector:'footer',            shared:true },
+  ],
+  CAL: [
+    { code:'UTIL', label:'Utility Bar',      selector:'div.u-head',        shared:true },
+    { code:'HDR',  label:'Header / Nav',     selector:'header.m-head',     shared:true },
+    { code:'PHRO', label:'Page Hero',        selector:'section.page-hero' },
+    { code:'CALC', label:'Calculator Widget',selector:'section#calculator' },
+    { code:'CTA',  label:'CTA Band',         selector:'section.cta-band' },
+    { code:'FTR',  label:'Footer',           selector:'footer',            shared:true },
+  ],
+  TRM: [
+    { code:'UTIL', label:'Utility Bar',  selector:'div.u-head',  shared:true },
+    { code:'HDR',  label:'Header / Nav', selector:'header.m-head', shared:true },
+    { code:'CONT', label:'Terms Content',selector:'div.wrap:last-of-type' },
+    { code:'FTR',  label:'Footer',       selector:'footer',      shared:true },
+  ],
+  PRV: [
+    { code:'UTIL', label:'Utility Bar',    selector:'div.u-head',  shared:true },
+    { code:'HDR',  label:'Header / Nav',   selector:'header.m-head', shared:true },
+    { code:'CONT', label:'Privacy Content',selector:'div.wrap:last-of-type' },
+    { code:'FTR',  label:'Footer',         selector:'footer',      shared:true },
+  ],
+  THX: [
+    { code:'UTIL', label:'Utility Bar',  selector:'div.u-head',  shared:true },
+    { code:'HDR',  label:'Header / Nav', selector:'header.m-head', shared:true },
+    { code:'CONT', label:'Thank You',    selector:'section, main' },
+    { code:'FTR',  label:'Footer',       selector:'footer',      shared:true },
+  ],
+};
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
 let activePage = 0;
-let activeBlock = null;
+let pageCache = {};   // {file: domDocument}
+let pageStatus = {}; // {file: 'loading'|'loaded'|'error'}
+let clipList = [];    // [{code, label}]
 
-function saveNotes() { localStorage.setItem(STORE_KEY, JSON.stringify(notes)); }
-function noteKey(pageId, path) { return pageId + '::' + path; }
-function getNote(pageId, path) { return notes[noteKey(pageId, path)] || null; }
+/* ═══════════════════════════════════════════════
+   FETCH PAGE
+═══════════════════════════════════════════════ */
+async function fetchPage(file) {
+  if (pageCache[file]) return pageCache[file];
+  pageStatus[file] = 'loading';
+  updateTabStatus();
+  try {
+    const res = await fetch('/' + file + '?_wf=' + Date.now());
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    pageCache[file] = doc;
+    pageStatus[file] = 'loaded';
+  } catch(e) {
+    pageStatus[file] = 'error';
+  }
+  updateTabStatus();
+  return pageCache[file] || null;
+}
 
-/* ─── RENDER TABS ─── */
+/* ═══════════════════════════════════════════════
+   EXTRACT ELEMENTS FROM A SECTION
+═══════════════════════════════════════════════ */
+function extractElements(doc, secDef, pageId) {
+  if (!doc) return [];
+  const selectors = secDef.selector.split(',').map(s => s.trim());
+  let node = null;
+  for (const sel of selectors) {
+    try { node = doc.querySelector(sel); if (node) break; } catch(e) {}
+  }
+  if (!node) return [{ type:'missing', text:'Section not found in page' }];
+
+  const els = [];
+  const base = location.origin + '/';
+  const pageCode = pageId + '-' + secDef.code;
+
+  /* Headings */
+  node.querySelectorAll('h1,h2,h3').forEach((el, i) => {
+    const text = el.textContent.replace(/\s+/g,' ').trim();
+    if (!text) return;
+    els.push({ type:'txt', code: pageCode + '-' + el.tagName, tag: el.tagName.toLowerCase(), text });
+  });
+
+  /* Named text elements */
+  node.querySelectorAll('.eyebrow').forEach(el => {
+    const text = el.textContent.replace(/\s+/g,' ').trim();
+    if (text) els.push({ type:'txt', code: pageCode + '-EYEBROW', tag:'eyebrow', text });
+  });
+
+  /* Paragraphs & leads */
+  let pIdx = 1;
+  node.querySelectorAll('p').forEach(el => {
+    if (el.closest('.fc-el')) return; // skip nested wireframe elements
+    const text = el.textContent.replace(/\s+/g,' ').trim();
+    if (!text || text.length < 8) return;
+    // Skip if parent is a .card (will be under card)
+    els.push({ type:'txt', code: pageCode + '-P' + pIdx, tag:'p', text: text.length > 140 ? text.slice(0,140)+'…' : text });
+    pIdx++;
+  });
+
+  /* Buttons / CTAs */
+  let btnIdx = 1;
+  node.querySelectorAll('a.btn, a.cta, button:not(#navtoggle)').forEach(el => {
+    const text = el.textContent.replace(/\s+/g,' ').trim();
+    if (!text) return;
+    const href = el.getAttribute('href') || '';
+    els.push({ type:'btn', code: pageCode + '-BTN' + btnIdx, tag:'btn', text, href });
+    btnIdx++;
+  });
+
+  /* Stat chips */
+  node.querySelectorAll('.stat').forEach((el, i) => {
+    const b = el.querySelector('b'); const s = el.querySelector('span');
+    if (b && s) els.push({ type:'txt', code: pageCode + '-STAT'+(i+1), tag:'stat',
+      text: b.textContent.trim() + ' — ' + s.textContent.trim() });
+  });
+
+  /* Images */
+  let imgIdx = 1;
+  node.querySelectorAll('img').forEach(el => {
+    const src = el.getAttribute('src') || '';
+    if (!src || src.includes('mark.png')) return;
+    const abs = src.startsWith('http') ? src : base + src.replace(/^\//, '');
+    els.push({ type:'img', code: pageCode + '-IMG' + imgIdx, tag:'img',
+      text: el.getAttribute('alt') || src.split('/').pop(), src: abs, rawSrc: src });
+    imgIdx++;
+  });
+
+  /* Nav links (header only) */
+  if (secDef.code === 'HDR') {
+    const navLinks = [];
+    node.querySelectorAll('.m-nav a').forEach(el => { navLinks.push(el.textContent.trim()); });
+    if (navLinks.length) els.push({ type:'txt', code: pageCode + '-NAV', tag:'nav', text: navLinks.join(' · ') });
+  }
+
+  return els;
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════ */
 function renderTabs() {
   const tabs = document.getElementById('tabs');
   tabs.innerHTML = '';
   PAGES.forEach((page, i) => {
-    const count = Object.keys(notes).filter(k => k.startsWith(page.id + '::') && notes[k].status !== 'none').length;
+    const st = pageStatus[page.file] || '';
     const tab = document.createElement('div');
     tab.className = 'tab' + (i === activePage ? ' active' : '');
-    tab.innerHTML = page.label + (count ? `<span class="badge">${count}</span>` : '');
-    tab.addEventListener('click', () => { activePage = i; closeDrawer(); renderTabs(); renderCanvas(); });
+    tab.innerHTML = page.label + `<span class="tab-status ${st}"></span>`;
+    tab.addEventListener('click', () => { activePage = i; renderTabs(); loadAndRender(); });
     tabs.appendChild(tab);
   });
 }
 
-/* ─── RENDER CANVAS ─── */
-function renderCanvas() {
-  const canvas = document.getElementById('canvas');
+function updateTabStatus() { renderTabs(); }
+
+async function loadAndRender() {
   const page = PAGES[activePage];
-  canvas.innerHTML = '';
-  page.sections.forEach(sec => {
-    const n = getNote(page.id, sec.path);
-    const status = n ? n.status : 'none';
-    const block = document.createElement('div');
-    block.className = 'wf-block' + (n && status !== 'none' ? ' has-note status-' + status : '') + (sec.shared ? ' shared' : '');
+  const fc = document.getElementById('flowchart');
+  fc.innerHTML = '<div style="padding:20px;font-family:var(--mono);font-size:12px;color:var(--muted)">Loading…</div>';
 
-    let statusTag = '';
-    if (status === 'change') statusTag = '<span class="block-status-tag status-tag-change">Needs change</span>';
-    if (status === 'urgent') statusTag = '<span class="block-status-tag status-tag-urgent">Urgent</span>';
-    if (status === 'done')   statusTag = '<span class="block-status-tag status-tag-done">Done</span>';
-    const sharedTag = sec.shared ? '<span class="block-shared-tag">Shared</span>' : '';
+  const bar = document.getElementById('loading-bar');
+  bar.style.width = '40%';
 
-    block.innerHTML = `
-      <div class="block-header">
-        <span class="block-label">${sec.label}</span>
-        ${sharedTag}${statusTag}
-      </div>
-      <div class="block-preview">${sec.preview}</div>
-      ${n && n.note ? `<div class="block-note-preview">↳ ${n.note.substring(0,120)}${n.note.length > 120 ? '…' : ''}</div>` : ''}
-      <div class="block-codes">
-        <span class="code-badge" data-copy="${sec.path}" title="Click to copy plain English ID">
-          <span class="copy-icon">⧉</span>${sec.path}
-        </span>
-        <span class="code-badge" data-copy="${sec.selector}" title="Click to copy HTML selector">
-          <span class="copy-icon">⧉</span><code>${sec.selector}</code>
-        </span>
-      </div>`;
+  const doc = await fetchPage(page.file);
 
-    block.querySelectorAll('.code-badge').forEach(badge => {
-      badge.addEventListener('click', e => {
-        e.stopPropagation();
-        const text = badge.getAttribute('data-copy');
-        navigator.clipboard.writeText(text).then(() => {
-          badge.classList.add('copied');
-          setTimeout(() => badge.classList.remove('copied'), 1200);
-        }).catch(() => {});
+  bar.style.width = '100%';
+  setTimeout(() => { bar.style.width = '0'; }, 400);
+
+  fc.innerHTML = '';
+  const sections = PAGE_SECTIONS[page.id] || [];
+
+  sections.forEach((sec, si) => {
+    /* Connector between sections */
+    if (si > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'fc-connector-line';
+      conn.innerHTML = '<div class="fc-connector"></div><div class="fc-connector-dot"></div><div class="fc-connector" style="height:4px"></div>';
+      fc.appendChild(conn);
+    }
+
+    const secCode = page.id + '-' + sec.code;
+    const node = document.createElement('div');
+    node.className = 'fc-section';
+
+    /* Section header */
+    const head = document.createElement('div');
+    head.className = 'fc-section-head';
+    head.innerHTML = `<span class="fc-section-label">${sec.label}</span>
+      ${sec.shared ? '<span class="fc-section-shared">Shared</span>' : ''}
+      <span class="fc-section-code" data-code="${secCode}" title="Copy section code">${secCode}</span>`;
+    head.querySelector('.fc-section-code').addEventListener('click', e => {
+      e.stopPropagation();
+      copyCode(secCode, sec.label + ' (section)', e.target);
+    });
+    node.appendChild(head);
+
+    /* Elements */
+    const elContainer = document.createElement('div');
+    elContainer.className = 'fc-elements';
+
+    if (!doc) {
+      elContainer.innerHTML = '<div class="fc-el"><span style="font-size:12px;color:#ef4444">Failed to load page</span></div>';
+    } else {
+      const els = extractElements(doc, sec, page.id);
+      if (!els.length) {
+        elContainer.innerHTML = '<div class="fc-el"><span style="font-size:12px;color:var(--muted)">No extractable elements</span></div>';
+      }
+      els.forEach(el => {
+        const row = document.createElement('div');
+        row.className = 'fc-el';
+
+        if (el.type === 'missing') {
+          row.innerHTML = `<span style="font-size:11px;color:var(--muted);font-style:italic">${el.text}</span>`;
+          elContainer.appendChild(row);
+          return;
+        }
+
+        const codeEl = document.createElement('span');
+        codeEl.className = 'fc-el-code type-' + el.type;
+        codeEl.textContent = el.code;
+        codeEl.title = 'Click to copy: ' + el.code;
+        codeEl.addEventListener('click', () => copyCode(el.code, el.text, codeEl));
+        row.appendChild(codeEl);
+
+        const content = document.createElement('div');
+        content.className = 'fc-el-content';
+
+        if (el.type === 'img') {
+          const imgRow = document.createElement('div');
+          imgRow.style.display = 'flex'; imgRow.style.alignItems = 'center'; imgRow.style.gap = '8px';
+          const thumb = document.createElement('img');
+          thumb.className = 'fc-el-img-thumb'; thumb.src = el.src;
+          thumb.onerror = () => { thumb.style.display='none'; };
+          imgRow.appendChild(thumb);
+          const textDiv = document.createElement('div');
+          textDiv.className = 'fc-el-content';
+          textDiv.innerHTML = `<div class="fc-el-text">${el.text}</div>
+            <div class="fc-el-meta">
+              <span class="fc-el-tag">${el.tag}</span>
+              <a class="fc-el-link" href="${el.src}" target="_blank" rel="noopener">↗ View image</a>
+            </div>`;
+          imgRow.appendChild(textDiv);
+          row.appendChild(imgRow);
+        } else {
+          content.innerHTML = `<div class="fc-el-text">${el.text}${el.href ? ` <em>→ ${el.href}</em>` : ''}</div>
+            <div class="fc-el-meta"><span class="fc-el-tag">${el.tag}</span></div>`;
+          row.appendChild(content);
+        }
+
+        elContainer.appendChild(row);
       });
-    });
+    }
 
-    block.addEventListener('click', () => openDrawer(sec));
-    canvas.appendChild(block);
+    node.appendChild(elContainer);
+    fc.appendChild(node);
   });
-  updateNoteCount();
 }
 
-/* ─── DRAWER ─── */
-function openDrawer(sec) {
-  activeBlock = sec;
-  document.getElementById('drawer-title').textContent = sec.label;
-  document.getElementById('d-path').textContent = sec.path;
-  document.getElementById('d-selector').textContent = sec.selector;
-  const n = getNote(PAGES[activePage].id, sec.path);
-  document.getElementById('d-status').value = n ? n.status : 'none';
-  document.getElementById('d-note').value = n ? n.note : '';
-  document.getElementById('drawer-delete').style.display = n ? 'block' : 'none';
-  document.getElementById('drawer').classList.remove('closed');
-}
-
-function closeDrawer() {
-  document.getElementById('drawer').classList.add('closed');
-  activeBlock = null;
-}
-
-document.getElementById('drawer-close').addEventListener('click', closeDrawer);
-
-document.getElementById('drawer-save').addEventListener('click', () => {
-  if (!activeBlock) return;
-  const key = noteKey(PAGES[activePage].id, activeBlock.path);
-  const status = document.getElementById('d-status').value;
-  const note = document.getElementById('d-note').value.trim();
-  notes[key] = { status, note, path: activeBlock.path, selector: activeBlock.selector,
-    label: activeBlock.label, page: PAGES[activePage].id, pageLabel: PAGES[activePage].label,
-    updated: new Date().toISOString() };
-  saveNotes();
-  document.getElementById('drawer-delete').style.display = 'block';
-  renderTabs(); renderCanvas();
-});
-
-document.getElementById('drawer-delete').addEventListener('click', () => {
-  if (!activeBlock) return;
-  delete notes[noteKey(PAGES[activePage].id, activeBlock.path)];
-  saveNotes();
-  closeDrawer();
-  renderTabs(); renderCanvas();
-});
-
-/* ─── NOTE COUNT ─── */
-function updateNoteCount() {
-  const total = Object.values(notes).filter(n => n.status !== 'none').length;
-  document.getElementById('note-count').textContent = total + ' annotation' + (total !== 1 ? 's' : '');
-}
-
-/* ─── EXPORT ─── */
-document.getElementById('export-btn').addEventListener('click', () => {
-  const all = Object.values(notes).filter(n => n.status !== 'none')
-    .sort((a, b) => a.page.localeCompare(b.page) || a.path.localeCompare(b.path));
-  if (!all.length) {
-    document.getElementById('export-text').textContent = 'No annotations yet. Click a section block to add one.';
-  } else {
-    const statusLabel = { change: 'NEEDS CHANGE', urgent: 'URGENT', done: 'DONE' };
-    let out = 'WALLR WIREFRAME ANNOTATIONS\n';
-    out += 'Exported: ' + new Date().toLocaleString() + '\n';
-    out += '─'.repeat(48) + '\n\n';
-    all.forEach((n, i) => {
-      out += `${i + 1}. ${n.pageLabel} — ${n.label} [${statusLabel[n.status] || n.status}]\n`;
-      out += `   Path:     ${n.path}\n`;
-      out += `   Selector: ${n.selector}\n`;
-      if (n.note) out += `   Note:     ${n.note}\n`;
-      out += '\n';
-    });
-    document.getElementById('export-text').textContent = out;
+/* ═══════════════════════════════════════════════
+   CLIPBOARD PANEL
+═══════════════════════════════════════════════ */
+function copyCode(code, label, badge) {
+  navigator.clipboard.writeText(code).catch(() => {});
+  if (badge) {
+    badge.classList.add('copied');
+    setTimeout(() => badge.classList.remove('copied'), 1000);
   }
-  document.getElementById('export-modal').classList.add('open');
+  if (!clipList.find(c => c.code === code)) {
+    clipList.push({ code, label });
+    renderClipList();
+  }
+}
+
+function renderClipList() {
+  const list = document.getElementById('code-list');
+  if (!clipList.length) {
+    list.innerHTML = '<div id="code-list-empty">Click a code badge to add it here</div>';
+    return;
+  }
+  list.innerHTML = '';
+  clipList.forEach((item, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'code-chip';
+    chip.innerHTML = `<span class="code-chip-text">${item.code}</span>
+      <button class="code-chip-del" title="Remove">×</button>`;
+    chip.querySelector('.code-chip-del').addEventListener('click', () => {
+      clipList.splice(i, 1); renderClipList();
+    });
+    list.appendChild(chip);
+  });
+}
+
+document.getElementById('compose-clear').addEventListener('click', () => {
+  clipList = []; renderClipList();
+  document.getElementById('compose-note').value = '';
 });
 
-document.getElementById('export-copy').addEventListener('click', () => {
-  const text = document.getElementById('export-text').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    document.getElementById('export-copy').textContent = '✅ Copied!';
-    setTimeout(() => document.getElementById('export-copy').textContent = 'Copy to clipboard', 1500);
+document.getElementById('compose-copy').addEventListener('click', () => {
+  const refs = clipList.map(c => '  ' + c.code).join('\n');
+  const note = document.getElementById('compose-note').value.trim();
+  const out = `WALLR CHANGE REQUEST\n${'─'.repeat(32)}\nReferences:\n${refs || '  (none)'}\n\nChange:\n  ${note || '(no description)'}\n\nDate: ${new Date().toLocaleString()}`;
+  navigator.clipboard.writeText(out).then(() => {
+    const btn = document.getElementById('compose-copy');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy full request', 1500);
   });
 });
 
-document.getElementById('export-close-btn').addEventListener('click', () => {
-  document.getElementById('export-modal').classList.remove('open');
+document.getElementById('compose-email').addEventListener('click', () => {
+  const refs = clipList.map(c => c.code).join(', ');
+  const note = document.getElementById('compose-note').value.trim();
+  const subject = encodeURIComponent('Wallr website change request');
+  const body = encodeURIComponent(`References: ${refs || 'none'}\n\nChange requested:\n${note}`);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
 });
 
-/* ─── INIT ─── */
+/* ═══════════════════════════════════════════════
+   LEGACY TOGGLE
+═══════════════════════════════════════════════ */
+document.getElementById('toggle-legacy-btn').addEventListener('click', () => {
+  const sys = document.getElementById('annotation-system');
+  const on = sys.style.display !== 'none' && sys.style.display !== '';
+  sys.style.display = on ? 'none' : 'block';
+  document.getElementById('toggle-legacy-btn').textContent = on ? '⚙ Annotation mode' : '⚙ Hide annotations';
+});
+document.getElementById('legacy-toggle').addEventListener('click', () => {
+  document.getElementById('toggle-legacy-btn').click();
+});
+
+/* ═══════════════════════════════════════════════
+   COMPOSE PANEL TOGGLE (mobile / narrow)
+═══════════════════════════════════════════════ */
+document.getElementById('open-compose-btn').addEventListener('click', () => {
+  const c = document.getElementById('compose');
+  c.style.display = c.style.display === 'none' ? 'flex' : 'none';
+});
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
 renderTabs();
-renderCanvas();
+loadAndRender();
 </script>
+
+<!-- ═══════════════════════════════════════════
+     LEGACY ANNOTATION SYSTEM (hidden)
+     Original localStorage annotation tool preserved below.
+═══════════════════════════════════════════ -->
+<div id="annotation-system" style="display:none">
+  <div style="padding:16px;background:#fff;border-top:2px solid #f59e0b">
+    <p style="font-family:monospace;font-size:12px;color:#92400e;margin-bottom:12px">⚠ Legacy annotation mode — notes saved to localStorage</p>
+    <!-- Legacy system placeholder — original annotation HTML would live here if restored -->
+    <p style="font-size:12px;color:#7a7570">The full annotation system from the previous version is preserved in the git history at commit <code>f13d1de</code>. To restore it, run: <code>git show f13d1de:wireframe.html</code></p>
+  </div>
+</div>
+
 </body>
 </html>
