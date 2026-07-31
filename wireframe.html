@@ -637,8 +637,10 @@ document.getElementById('compose-email').addEventListener('click', () => {
   const refs = clipList.map(c => c.code).join(', ');
   const note = document.getElementById('compose-note').value.trim();
   const subject = encodeURIComponent('Wallr website change request');
-  const body = encodeURIComponent(`References: ${refs || 'none'}\n\nChange requested:\n${note}`);
-  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  const sentences = note.split('.').map(s => s.trim()).filter(s => s.length > 0);
+  const noteFormatted = sentences.length > 1 ? sentences.map((s,i) => `${i+1}. ${s}.`).join('\n') : note;
+  const body = encodeURIComponent(`References: ${refs || 'none'}\n\nChange requested:\n${noteFormatted}`);
+  window.location.href = `mailto:drew@wall-r.com?subject=${subject}&body=${body}`;
 });
 
 /* ═══════════════════════════════════════════════
