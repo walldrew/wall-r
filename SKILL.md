@@ -66,7 +66,7 @@ Same logic, bound to `#tec-printfield`. Uses video `v1783193721` (close-up nozzl
 
 ## Change Log
 
-### 2026-08-04 — Session 1 (HAL)
+### 2026-08-04 — Session 1, revision 2 (HAL)
 
 **Backup:** `git tag backup-pre-changes-20260804` · branch `backup-20260804`
 Restore: `git checkout backup-20260804` or `git checkout backup-pre-changes-20260804 -- <file>`
@@ -86,17 +86,21 @@ Restore: `git checkout backup-20260804` or `git checkout backup-pre-changes-2026
 - **Alt/caption:** "Printer Characteristics — Technical overview of the system's print area, speed, and material throughput capabilities"
 - **Restore:** Add back as `<div class="gallery-item reveal" data-src="...">` with `<img>` + `.gallery-caption` inside the Printer `.gallery-grid`
 
-#### 3. Technology page — Hero expanded + Layering Effect moved from Home
+#### 3. Technology page — Layering Effect added to existing page-hero (no structural change)
 - **File:** `technology.html`
-- **Removed (original hero):** `<section class="page-hero">` with SVG blueprint art panel (R0.60 toolpath trace)
-  - SVG was: path trace `M60 320 h300 a60 60...` + dashed guide + circle at origin + "R0.60" label
-  - Restore SVG: `git checkout backup-pre-changes-20260804 -- technology.html`
-- **Added:** Full `section.hero` with `min-height:70vh` replacing `section.page-hero`
-  - Video background: same nozzle video (`v1783193721`) at `opacity:0.45`
-  - Canvas `#tec-printfield` with inline JS (identical bead algorithm as IDX `#printfield`)
-  - Content text: dark bg, ivory/sand color scheme to match hero contrast
-- **Layering effect source:** `index.html` IDX-HERO — unchanged on home page (effect now on BOTH pages)
-- **Wireframe note:** `TEC-PHRO` section label updated — now maps to `section.hero#tec-top` instead of `section.page-hero`
+- **Original hero preserved:** `section.page-hero` with all text and SVG blueprint art intact
+- **Added:** `<div class="hero-canvas" id="tec-printfield">` as absolute-positioned canvas overlay (z-index:0) inside the existing section
+  - Section gets `position:relative;overflow:hidden`
+  - Canvas: same bead algorithm as IDX `#printfield` — rows build bottom-up, left-to-right, 16px gap, wave wobble, `rgba(110,99,87,alpha)` strokes
+  - Inline `<script>` block placed after `</section>` tag
+  - **No video added** — canvas only, on top of existing SVG art
+  - Content `.wrap` gets `position:relative;z-index:1` so text stays above canvas
+
+#### 4. Home page — Layering Effect removed, video kept
+- **File:** `index.html`
+- **Removed:** `<div class="hero-canvas" id="printfield" aria-hidden="true" style="z-index:1">` only
+- **Kept:** Video background, all hero text, stat chips, buttons — untouched
+- **Note:** The `printfield` JS in `assets/site.js` remains — it will find no `#printfield` element and exit cleanly (guarded by `if(host...)`)
 
 ---
 

@@ -32,25 +32,29 @@
   </nav>
 </div></header>
 
-<!-- TEC-PHRO: expanded hero with layering canvas effect (moved from IDX-HERO 2026-08-04). SVG art removed — see git tag backup-pre-changes-20260804 to restore original. -->
-<section class="hero" id="tec-top" style="position:relative;overflow:hidden;min-height:70vh">
-  <video autoplay muted loop playsinline aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.45;z-index:0;pointer-events:none">
-    <source src="https://res.cloudinary.com/ufn3pxdn/video/upload/v1783193721/09_-_WhatsApp_Video_2026-06-14_at_14.21.57_prfhig.mp4" type="video/mp4">
-  </video>
-  <div class="hero-canvas" id="tec-printfield" aria-hidden="true" style="z-index:1"></div>
-  <div class="wrap hero-inner" style="position:relative;z-index:2;padding:120px 0 80px">
-    <div class="eyebrow reveal" style="color:var(--sand)">Technology</div>
-    <h1 class="reveal" style="color:var(--ivory)">Additive construction, explained</h1>
-    <p class="lead reveal" style="margin-top:18px;max-width:60ch;color:#E8E0D2">3D concrete printing, 3DCP, is construction by addition. A gantry or robotic arm extrudes an engineered mortar in precise layers, straight from the design file. Material goes only where the structure needs it.</p>
-  </div>
-</section>
+<section class="page-hero" style="position:relative;overflow:hidden">
+<!-- TEC-PHRO layering canvas effect (moved from IDX-HERO 2026-08-04) -->
+<div class="hero-canvas" id="tec-printfield" aria-hidden="true" style="z-index:0;opacity:0;transition:opacity 1.6s ease"></div>
+<div class="hero-art" aria-hidden="true" style="position:relative;z-index:1">
+<svg viewBox="0 0 600 400" fill="none">
+  <path class="trace" d="M60 320 h300 a60 60 0 0 0 60 -60 v-80 a60 60 0 0 0 -60 -60 h-180
+    a50 50 0 0 0 -50 50 v60" stroke="#8C6D4F" stroke-width="3" stroke-linecap="round"/>
+  <path d="M60 340 h300 a80 80 0 0 0 80 -80 v-60" stroke="#C9B9A4" stroke-width="1.4" stroke-dasharray="3 8"/>
+  <circle cx="60" cy="320" r="6" fill="#8C6D4F"/>
+  <text x="380" y="120" font-family="IBM Plex Mono, monospace" font-size="12" fill="#8B8578">R0.60</text>
+</svg></div><div class="wrap" style="position:relative;z-index:1">
+  <div class="eyebrow reveal">Technology</div>
+  <h1 class="reveal">Additive construction, explained</h1>
+  <p class="lead reveal" style="margin-top:18px;max-width:60ch">3D concrete printing, 3DCP, is construction by addition. A gantry or robotic arm extrudes an engineered mortar in precise layers, straight from the design file. Material goes only where the structure needs it.</p>
+</div></section>
 <script>
-/* TEC-PHRO canvas effect — same pattern as IDX hero printfield, bound to #tec-printfield */
+/* TEC-PHRO canvas bead animation — same pattern as IDX hero printfield, added 2026-08-04 */
 (function(){
   var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var host=document.getElementById('tec-printfield');
   if(!host||reduced){if(host)host.remove();return;}
   var cv=document.createElement('canvas');host.appendChild(cv);
+  host.style.cssText+='position:absolute;inset:0;';
   var ctx=cv.getContext('2d');
   var W=0,H=0,dpr=1,rows=[],t0=null,running=false,raf=0,shown=false;
   function build(){
@@ -59,7 +63,7 @@
     cv.width=W*dpr;cv.height=H*dpr;
     ctx.setTransform(dpr,0,0,dpr,0,0);
     var rowMin=40;
-    var h1el=document.querySelector('#tec-top h1');
+    var h1el=document.querySelector('#tec-top h1, .page-hero h1');
     if(h1el){var hR=host.getBoundingClientRect();var h1R=h1el.getBoundingClientRect();rowMin=Math.max(40,h1R.bottom-hR.top+16);}
     rows=[];var gap=16;
     for(var y=H-8;y>rowMin;y-=gap)rows.push(y);
@@ -88,7 +92,7 @@
       }
       ctx.stroke();
     }
-    if(!shown){shown=true;host.classList.add('on');}
+    if(!shown){shown=true;host.style.opacity='1';}
   }
   function start(){if(!running){running=true;raf=requestAnimationFrame(draw);}}
   function stop(){running=false;cancelAnimationFrame(raf);}
