@@ -52,6 +52,8 @@ p{max-width:66ch}
 .u-head .wrap{display:flex;justify-content:flex-end;gap:28px;align-items:center;height:40px}
 .u-head a{font-size:12px;letter-spacing:.08em;color:var(--taupe)}
 .u-head a.hot{color:var(--bronze-deep);font-weight:500}
+/* Hide address on mobile — Contact + About only */
+@media(max-width:640px){.u-head .wrap a:nth-child(2){display:none}}
 .m-head{position:sticky;top:0;z-index:60;background:rgba(246,241,228,.92);
   backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .m-head .wrap{display:flex;justify-content:space-between;align-items:center;height:76px}
@@ -93,6 +95,9 @@ p{max-width:66ch}
 .hero-inner{position:relative;z-index:1;width:100%;padding:120px 0 90px}
 @media(max-width:768px){.hero-inner{padding:80px 0 60px}}
 @media(max-width:480px){.hero-inner{padding:60px 0 44px}}
+/* Override inline margin-top:144px on hero .btn-row on mobile */
+@media(max-width:640px){.hero .btn-row{margin-top:60px}}
+@media(max-width:480px){.hero .btn-row{margin-top:44px}}
 .hero h1{margin:10px 0 6px}
 .hero .sub{font-family:var(--serif);font-size:clamp(19px,2.4vw,26px);font-style:italic;
   color:var(--taupe);letter-spacing:.02em}
@@ -116,6 +121,9 @@ p{max-width:66ch}
 .g4{grid-template-columns:repeat(4,1fr)}
 @media(max-width:960px){.g3,.g4{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+/* Industry tiles: 2-column on mobile to avoid 4x300px scroll wall */
+@media(max-width:640px){#industries .g4{grid-template-columns:1fr 1fr}.tile{min-height:200px;border-radius:14px}}
+@media(max-width:380px){#industries .g4{grid-template-columns:1fr}.tile{min-height:180px}}
 
 /* Numbered service chips, like the existing 1‖ CONSULTING blocks */
 .numchip{display:inline-flex;align-items:center;gap:12px;background:var(--taupe);
@@ -231,6 +239,17 @@ footer .mark-img{height:36px}
 .stat b{display:block;font-family:var(--serif);font-weight:500;font-size:26px;color:var(--ink)}
 .stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--taupe)}
+/* Mobile stat chips: grid forces equal-width columns, eliminating cross-browser flex-wrap inconsistency */
+@media(max-width:640px){
+  .stat-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+  .stat{padding:12px 16px}
+  .stat b{font-size:22px}
+}
+@media(max-width:380px){
+  .stat-chips{grid-template-columns:1fr 1fr;gap:8px}
+  .stat b{font-size:20px}
+  .stat{padding:10px 14px}
+}
 .dark .stat{background:#352C24;border-color:var(--line-inv)}
 .dark .stat b{color:var(--ivory)}.dark .stat span{color:var(--sand)}
 /* Comparison table */
