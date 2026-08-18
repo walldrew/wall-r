@@ -239,11 +239,15 @@ footer .mark-img{height:36px}
 .stat b{display:block;font-family:var(--serif);font-weight:500;font-size:26px;color:var(--ink)}
 .stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--taupe)}
-/* IDX-TECH redesign: tech-list right column adjusts on mobile */
+/* IDX-TECH: full-width 3-column rule layout */
+.tech-items{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.tech-items>div{padding:28px 36px 28px 0;border-right:1px solid var(--line)}
+.tech-items>div:last-child{padding-right:0;border-right:none}
+.tech-items b{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);display:block;margin-bottom:12px}
 @media(max-width:640px){
-  .tech-list{border-left:none!important;border-top:1px solid var(--line);padding-top:4px}
-  .tech-list>div{padding-left:0!important}
-  .tech-list>div:first-child{padding-top:20px}
+  .tech-items{grid-template-columns:1fr}
+  .tech-items>div{padding:22px 0;border-right:none;border-bottom:1px solid var(--line)}
+  .tech-items>div:last-child{border-bottom:none}
 }
 /* Mobile stat chips: grid forces equal-width columns, eliminating cross-browser flex-wrap inconsistency */
 @media(max-width:640px){
