@@ -239,21 +239,16 @@ footer .mark-img{height:36px}
 .stat b{display:block;font-family:var(--serif);font-weight:500;font-size:26px;color:var(--ink)}
 .stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--taupe)}
-/* IDX-TECH: full-bleed split (aligns with .split premise section), numbered steps panel */
-.tech-split{min-height:0}
-.tech-split>div:first-child{padding:88px 56px}
-.tech-steps{background:#241D18;padding:56px;display:flex;flex-direction:column;gap:0;justify-content:center}
-.tech-step{display:flex;gap:22px;padding:26px 0;border-bottom:1px solid var(--line-inv)}
-.tech-step:first-child{padding-top:0}
-.tech-step:last-child{padding-bottom:0;border-bottom:none}
-.tech-num{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--bronze);
-  padding-top:4px;flex-shrink:0}
-.tech-step b{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--ivory);display:block;margin-bottom:6px}
-.tech-step p{color:#D8CFC0;font-size:15.5px;line-height:1.6}
-@media(max-width:900px){
-  .tech-split>div:first-child{padding:44px 24px}
-  .tech-steps{padding:36px 24px}
-}
+/* IDX-TECH: light 2-col within .wrap (aligns with all other .wrap sections). Right = numbered rows */
+.tech-list{display:flex;flex-direction:column}
+.tech-row{display:flex;gap:20px;padding:22px 0;border-bottom:1px solid var(--line)}
+.tech-row:first-child{padding-top:0}
+.tech-row:last-child{border-bottom:none}
+.tech-idx{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--bronze);
+  padding-top:3px;flex-shrink:0}
+.tech-row b{font-family:var(--serif);font-weight:500;font-size:21px;color:var(--ink);display:block;margin-bottom:5px}
+.tech-row p{color:var(--taupe);font-size:15.5px;line-height:1.6}
+@media(max-width:640px){.tech-row{gap:16px}}
 /* Mobile stat chips: grid forces equal-width columns, eliminating cross-browser flex-wrap inconsistency */
 @media(max-width:640px){
   .stat-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
