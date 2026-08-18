@@ -239,6 +239,12 @@ footer .mark-img{height:36px}
 .stat b{display:block;font-family:var(--serif);font-weight:500;font-size:26px;color:var(--ink)}
 .stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--taupe)}
+/* IDX-TECH redesign: tech-list right column adjusts on mobile */
+@media(max-width:640px){
+  .tech-list{border-left:none!important;border-top:1px solid var(--line);padding-top:4px}
+  .tech-list>div{padding-left:0!important}
+  .tech-list>div:first-child{padding-top:20px}
+}
 /* Mobile stat chips: grid forces equal-width columns, eliminating cross-browser flex-wrap inconsistency */
 @media(max-width:640px){
   .stat-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
