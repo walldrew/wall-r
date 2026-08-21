@@ -65,6 +65,10 @@ body { font-family: 'Jost', system-ui, sans-serif; background: var(--bg); color:
 .fc-section-label { font-size: 12px; font-weight: 600; font-family: var(--mono); flex: 1; }
 .fc-section-shared { font-size: 9px; font-family: var(--mono); background: var(--tag-sec-bg);
   color: var(--tag-sec); padding: 2px 7px; border-radius: 4px; letter-spacing: .06em; text-transform: uppercase; }
+.fc-section-anim  { font-size: 9px; font-family: var(--mono); background: #fef3c7;
+  color: #92400e; padding: 2px 7px; border-radius: 4px; letter-spacing: .06em; text-transform: uppercase; cursor: help; }
+.fc-section-hidden { font-size: 9px; font-family: var(--mono); background: #f3f4f6;
+  color: #6b7280; padding: 2px 7px; border-radius: 4px; letter-spacing: .06em; text-transform: uppercase; cursor: help; border: 1px dashed #d1d5db; }
 .fc-section-code { font-size: 9.5px; font-family: var(--mono); background: #1a1714;
   color: #f0ede8; padding: 2px 8px; border-radius: 4px; cursor: pointer; letter-spacing: .06em; }
 .fc-section-code:hover { background: var(--accent); }
@@ -199,7 +203,6 @@ const PAGES = [
   { id: 'IDX', label: 'Home',        file: 'index.html' },
   { id: 'ABT', label: 'About',       file: 'about.html' },
   { id: 'SVC', label: 'Services',    file: 'services.html' },
-  { id: 'TEC', label: 'Technology',  file: 'technology.html' },
   { id: 'PRJ', label: 'Projects',    file: 'projects.html' },
   { id: 'GAL', label: 'Gallery',     file: 'gallery.html' },
   { id: 'GCS', label: "GC's",        file: 'gcs.html' },
@@ -217,17 +220,14 @@ const PAGES = [
 /* Section definitions per page — what to extract and how to code it */
 const PAGE_SECTIONS = {
   IDX: [
-    { code:'UTIL', label:'Utility Bar',        selector:'div.u-head',                shared:true },
-    { code:'HDR',  label:'Header / Nav',       selector:'header.m-head',             shared:true },
-    { code:'HERO', label:'Hero',               selector:'section.hero' },
-    { code:'PREM', label:'The Premise',        selector:'section.dark' },
-    { code:'TECH', label:'Technology Teaser',  selector:'section#technology-teaser' },
-    { code:'WIIM', label:'Why It Matters',     selector:'#why-it-matters, section.dark:last-of-type', attempt:'dark2' },
-    { code:'SVCT', label:'Services Teaser',    selector:'section#services-teaser' },
-    { code:'PRJT', label:'Projects Teaser',    selector:'section#projects-teaser' },
-    { code:'IND',  label:'Industry Pros',      selector:'section#industries' },
-    { code:'CTA',  label:'CTA Band',           selector:'section.cta-band' },
-    { code:'FTR',  label:'Footer',             selector:'footer',                    shared:true },
+    { code:'UTIL', label:'Utility Bar',    selector:'div.u-head',         shared:true },
+    { code:'HDR',  label:'Header / Nav',   selector:'header.m-head',      shared:true },
+    { code:'HERO', label:'Hero',           selector:'section.hero',       anim:'Video background (autoplay loop) + reveal fade-in on heading & buttons' },
+    { code:'PREM', label:'The Premise',    selector:'section.dark',       anim:'reveal (intersection-observer fade-in)' },
+    { code:'WIIM', label:'Why It Matters', selector:'#why-it-matters',    anim:'reveal (intersection-observer fade-in) — 4 cards + quote' },
+    { code:'CAL',  label:'Calculator',     selector:'section#calculator', hidden:'Currently not displayed — display:none. Re-enable by removing inline style.' },
+    { code:'PDIV', label:'Print Divider',  selector:'.print-divider',     anim:'Canvas animation (bead print loop, IntersectionObserver-gated, reduced-motion safe)' },
+    { code:'FTR',  label:'Footer',         selector:'footer',             shared:true },
   ],
   ABT: [
     { code:'UTIL', label:'Utility Bar',   selector:'div.u-head',        shared:true },
@@ -247,18 +247,7 @@ const PAGE_SECTIONS = {
     { code:'CTA',  label:'CTA Band',      selector:'section.cta-band' },
     { code:'FTR',  label:'Footer',        selector:'footer',            shared:true },
   ],
-  TEC: [
-    { code:'UTIL', label:'Utility Bar',        selector:'div.u-head',          shared:true },
-    { code:'HDR',  label:'Header / Nav',       selector:'header.m-head',       shared:true },
-    { code:'PHRO', label:'Page Hero',          selector:'section.page-hero' },
-    { code:'HOW',  label:'How a Print Runs',   selector:'section:nth-of-type(2)' },
-    { code:'CMP',  label:'Comparison Table',   selector:'section:nth-of-type(3)' },
-    { code:'VID',  label:'Video / Media',      selector:'section.dark' },
-    { code:'GLOS', label:'Glossary',           selector:'section:nth-of-type(5)' },
-    { code:'FAQ',  label:'FAQ',                selector:'section:nth-of-type(6)' },
-    { code:'CTA',  label:'CTA Band',           selector:'section.cta-band' },
-    { code:'FTR',  label:'Footer',             selector:'footer',              shared:true },
-  ],
+  /* TEC removed — Technology page hidden (redirects to /) */
   PRJ: [
     { code:'UTIL', label:'Utility Bar',    selector:'div.u-head',        shared:true },
     { code:'HDR',  label:'Header / Nav',   selector:'header.m-head',     shared:true },
@@ -514,6 +503,8 @@ async function loadAndRender() {
     head.className = 'fc-section-head';
     head.innerHTML = `<span class="fc-section-label">${sec.label}</span>
       ${sec.shared ? '<span class="fc-section-shared">Shared</span>' : ''}
+      ${sec.anim   ? '<span class="fc-section-anim"   title="' + sec.anim.replace(/"/g,'&quot;')   + '">🎬 Animated</span>'  : ''}
+      ${sec.hidden ? '<span class="fc-section-hidden" title="' + sec.hidden.replace(/"/g,'&quot;') + '">◎ Hidden</span>'    : ''}
       <span class="fc-section-code" data-code="${secCode}" title="Copy section code">${secCode}</span>`;
     head.querySelector('.fc-section-code').addEventListener('click', e => {
       e.stopPropagation();
