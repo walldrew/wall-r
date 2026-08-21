@@ -192,7 +192,7 @@
       var xEnd = prog * (W + 40);
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(110,99,87,' + (0.16 + 0.05 * Math.sin(i * 1.7)).toFixed(3) + ')';
-      ctx.lineWidth = 5; ctx.lineCap = 'round';
+      ctx.lineWidth = 3; ctx.lineCap = 'round';
       for (var x = -20; x <= xEnd; x += 14) {
         var yy = y + Math.sin(x * 0.012 + i * 0.9) * 2.2;
         if (x === -20) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
