@@ -158,7 +158,7 @@
 
   var host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
-  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;';
+  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1;';
   section.insertBefore(host, section.firstChild);
 
   var wrapEl = section.querySelector('.wrap');
@@ -182,13 +182,16 @@
   function draw(ts) {
     if (!running) return;
     raf = requestAnimationFrame(draw);
-    if (t0 === null) t0 = ts;
+    /* Give row 0 a 200ms head-start so it's already drawing on first visible frame */
+    if (t0 === null) t0 = ts - 200;
     var elapsed = (ts - t0) / 1000;
     ctx.clearRect(0, 0, W, H);
+    var anyDrawn = false;
     for (var i = 0; i < rows.length; i++) {
       var y = rows[i];
       var prog = Math.min(1, Math.max(0, (elapsed - i * 0.22) / 2.5));
       if (prog <= 0) continue;
+      anyDrawn = true;
       var xEnd = prog * (W + 40);
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(110,99,87,' + (0.16 + 0.05 * Math.sin(i * 1.7)).toFixed(3) + ')';
@@ -199,7 +202,7 @@
       }
       ctx.stroke();
     }
-    if (!shown) { shown = true; host.style.opacity = '1'; }
+    shown = anyDrawn;
   }
 
   function start() {
