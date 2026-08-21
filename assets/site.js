@@ -183,13 +183,13 @@
     if (!running) return;
     raf = requestAnimationFrame(draw);
     /* Give row 0 a 200ms head-start so it's already drawing on first visible frame */
-    if (t0 === null) t0 = ts - 200;
+    if (t0 === null) t0 = ts - 500;
     var elapsed = (ts - t0) / 1000;
     ctx.clearRect(0, 0, W, H);
     var anyDrawn = false;
     for (var i = 0; i < rows.length; i++) {
       var y = rows[i];
-      var prog = Math.min(1, Math.max(0, (elapsed - i * 0.22) / 2.5));
+      var prog = Math.min(1, Math.max(0, (elapsed - i * 0.06) / 2.5));
       if (prog <= 0) continue;
       anyDrawn = true;
       var xEnd = prog * (W + 40);
