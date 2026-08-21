@@ -441,6 +441,20 @@ function extractElements(doc, secDef, pageId) {
     imgIdx++;
   });
 
+  /* Form fields — extract labels when section contains a form */
+  if (node.querySelector('form, .field')) {
+    var fldIdx = 1;
+    node.querySelectorAll('.field label, label[for]').forEach(function (el) {
+      var text = el.textContent.replace(/\s+/g,' ').trim();
+      if (!text) return;
+      var forAttr = el.getAttribute('for') || '';
+      var inputEl = forAttr ? doc.getElementById(forAttr) : null;
+      var inputType = inputEl ? (inputEl.tagName === 'SELECT' ? 'select' : inputEl.tagName === 'TEXTAREA' ? 'textarea' : (inputEl.getAttribute('type') || 'text')) : '';
+      els.push({ type:'txt', code: pageCode + '-FLD' + fldIdx, tag: inputType || 'field', text: text });
+      fldIdx++;
+    });
+  }
+
   /* Nav links (header only) */
   if (secDef.code === 'HDR') {
     const navLinks = [];
