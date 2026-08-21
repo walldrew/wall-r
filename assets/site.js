@@ -145,17 +145,20 @@
 })();
 
 /* ===== IDX-WIIM: bead canvas background =====
-   Same animation as the section dividers (CYCLE=3200ms, 5 rows) applied
-   as a full-section background. Divider removed from index.html. */
+   One-shot print-up identical to TEC-PHRO: rows lay bottom-to-top,
+   each staggered 0.22 s, 1.4 s draw time per row. Full section height,
+   no h1 cutoff. Opacity fades in on first frame. */
 (function () {
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var section = document.getElementById('why-it-matters');
   if (!section || reduced) return;
 
   section.style.position = 'relative';
+  section.style.overflow = 'hidden';
+
   var host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
-  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;';
+  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.6s ease;';
   section.insertBefore(host, section.firstChild);
 
   var wrapEl = section.querySelector('.wrap');
@@ -164,47 +167,42 @@
   var cv = document.createElement('canvas');
   host.appendChild(cv);
   var ctx = cv.getContext('2d');
-  var W = 0, H = 0, dpr = 1, raf = 0, t0 = null, running = false;
-  var ROWS = 5, GAP, ROW_Y = [];
-  var CYCLE = 3200;
+  var W = 0, H = 0, dpr = 1, rows = [], t0 = null, running = false, raf = 0, shown = false;
 
   function build() {
-    var r = host.getBoundingClientRect();
-    W = Math.max(r.width, 100); H = Math.max(r.height, 60);
+    var r = section.getBoundingClientRect();
+    W = r.width; H = r.height;
     dpr = Math.min(devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    GAP = H / (ROWS + 1); ROW_Y = [];
-    for (var i = ROWS; i >= 1; i--) ROW_Y.push(i * GAP);
+    rows = []; var gap = 16;
+    for (var y = H - 8; y > 16; y -= gap) rows.push(y);
   }
 
   function draw(ts) {
     if (!running) return;
     raf = requestAnimationFrame(draw);
     if (t0 === null) t0 = ts;
-    var phase = ((ts - t0) % CYCLE) / CYCLE;
+    var elapsed = (ts - t0) / 1000;
     ctx.clearRect(0, 0, W, H);
-    var rowDur = 1 / ROWS;
-    for (var i = 0; i < ROW_Y.length; i++) {
-      var y = ROW_Y[i];
-      var rowStart = i * rowDur * 0.7;
-      var rowProg = Math.min(1, Math.max(0, (phase - rowStart) / (rowDur * 1.1)));
-      if (rowProg <= 0) continue;
-      var fade = phase > 0.85 ? 1 - (phase - 0.85) / 0.15 : 1;
-      var alpha = (0.13 + 0.06 * Math.sin(i * 1.4)) * fade;
+    for (var i = 0; i < rows.length; i++) {
+      var y = rows[i];
+      var prog = Math.min(1, Math.max(0, (elapsed - i * 0.22) / 1.4));
+      if (prog <= 0) continue;
+      var xEnd = prog * (W + 40);
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(110,99,87,' + alpha.toFixed(3) + ')';
-      ctx.lineWidth = 6; ctx.lineCap = 'round';
-      var xEnd = rowProg * (W + 20), step = 14;
-      for (var x = 0; x <= xEnd; x += step) {
-        var wob = Math.sin(x * 0.013 + i * 0.8) * 1.8;
-        if (x === 0) ctx.moveTo(x, y + wob); else ctx.lineTo(x, y + wob);
+      ctx.strokeStyle = 'rgba(110,99,87,' + (0.16 + 0.05 * Math.sin(i * 1.7)).toFixed(3) + ')';
+      ctx.lineWidth = 7; ctx.lineCap = 'round';
+      for (var x = -20; x <= xEnd; x += 14) {
+        var yy = y + Math.sin(x * 0.012 + i * 0.9) * 2.2;
+        if (x === -20) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
       }
       ctx.stroke();
     }
+    if (!shown) { shown = true; host.style.opacity = '1'; }
   }
 
-  function start() { if (!running) { running = true; raf = requestAnimationFrame(draw); } }
+  function start() { if (!running) { t0 = null; shown = false; running = true; raf = requestAnimationFrame(draw); } }
   function stop()  { running = false; cancelAnimationFrame(raf); }
 
   new IntersectionObserver(function (es) {
