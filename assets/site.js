@@ -175,7 +175,7 @@
     dpr = Math.min(devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    rows = []; var gap = 18;
+    rows = []; var gap = 9;
     for (var y = H - 8; y > 16; y -= gap) rows.push(y);
   }
 
