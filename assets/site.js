@@ -144,12 +144,106 @@
   } else if (host) { host.remove(); }
 })();
 
+/* ===== IDX-WIIM + divider: extended bead canvas =====
+   Single canvas anchored in #why-it-matters, extending 90 px below to cover
+   the adjacent .print-divider. Rows print bottom-to-top so the animation
+   rises from the divider strip and fills the full section.
+   The divider's own canvas is suppressed via data-no-canvas. */
+(function () {
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var section = document.getElementById('why-it-matters');
+  if (!section) return;
+
+  /* Locate the adjacent print-divider sibling */
+  var divider = null, sib = section.nextElementSibling;
+  while (sib) {
+    if (sib.classList && sib.classList.contains('print-divider')) { divider = sib; break; }
+    if (sib.tagName === 'SECTION' || sib.tagName === 'FOOTER') break;
+    sib = sib.nextElementSibling;
+  }
+  var DIVH = divider ? 90 : 0;
+  if (divider) divider.setAttribute('data-no-canvas', '1');
+
+  if (reduced) {
+    if (divider) divider.style.background = 'repeating-linear-gradient(180deg,rgba(110,99,87,.13) 0 5px,transparent 5px 16px)';
+    return;
+  }
+
+  /* Canvas host: covers section + divider height below */
+  section.style.position = 'relative';
+  var host = document.createElement('div');
+  host.setAttribute('aria-hidden', 'true');
+  host.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:-' + DIVH + 'px;z-index:0;pointer-events:none;';
+  section.insertBefore(host, section.firstChild);
+
+  /* Keep section content above canvas */
+  var wrapEl = section.querySelector('.wrap');
+  if (wrapEl) { wrapEl.style.position = 'relative'; wrapEl.style.zIndex = '1'; }
+
+  var cv = document.createElement('canvas');
+  cv.style.cssText = 'display:block;width:100%;height:100%;';
+  host.appendChild(cv);
+  var ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = 1, rows = [], raf = 0, running = false;
+  var CYCLE = 4200; /* ms per full draw cycle */
+
+  function build() {
+    var r = host.getBoundingClientRect();
+    W = Math.max(r.width, 100); H = Math.max(r.height, 100);
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rows = [];
+    var gap = 18;
+    for (var y = H - 8; y > 16; y -= gap) rows.push(y); /* bottom → top */
+  }
+
+  function draw() {
+    if (!running) return;
+    raf = requestAnimationFrame(draw);
+    var phase = (Date.now() % CYCLE) / CYCLE; /* wall-clock → both canvases stay in phase */
+    ctx.clearRect(0, 0, W, H);
+    var n = rows.length;
+    for (var i = 0; i < n; i++) {
+      var y = rows[i];                                       /* rows[0]=bottom, rows[n-1]=top */
+      var rowFrac  = i / (n - 1 || 1);                      /* 0=bottom, 1=top */
+      var rowStart = rowFrac * 0.65;                         /* bottom rows start first */
+      var rowProg  = Math.min(1, Math.max(0, (phase - rowStart) / 0.28));
+      if (rowProg <= 0) continue;
+      var fade  = phase > 0.85 ? 1 - (phase - 0.85) / 0.15 : 1;
+      var alpha = (0.11 + 0.05 * Math.sin(i * 1.3)) * rowProg * fade;
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(110,99,87,' + alpha.toFixed(3) + ')';
+      ctx.lineWidth = 6; ctx.lineCap = 'round';
+      var xEnd = rowProg * (W + 20), step = 14;
+      for (var x = 0; x <= xEnd; x += step) {
+        var wob = Math.sin(x * 0.013 + i * 0.8) * 1.8;
+        if (x === 0) ctx.moveTo(x, y + wob); else ctx.lineTo(x, y + wob);
+      }
+      ctx.stroke();
+    }
+  }
+
+  function start() { if (!running) { running = true; raf = requestAnimationFrame(draw); } }
+  function stop()  { running = false; cancelAnimationFrame(raf); }
+
+  new IntersectionObserver(function (es) {
+    es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+  }, { threshold: 0.05 }).observe(section);
+  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+  addEventListener('resize', function () {
+    clearTimeout(section._wr); section._wr = setTimeout(build, 200);
+  });
+  build();
+})();
+
 /* ===== Print-bead section dividers =====
    Miniaturised version of the hero canvas: 5 bead rows forming left to right,
    looping continuously. No cursor interaction — purely decorative. */
 (function () {
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('.print-divider').forEach(function (host) {
+    if (host.getAttribute('data-no-canvas')) return; /* managed by extended canvas above */
     if (reduced) { host.style.background = 'repeating-linear-gradient(180deg,rgba(110,99,87,.13) 0 5px,transparent 5px 16px)'; return; }
     var cv = document.createElement('canvas');
     host.appendChild(cv);
