@@ -145,9 +145,9 @@
 })();
 
 /* ===== IDX-WIIM: bead canvas background =====
-   Exact TEC-PHRO params (lw=7, wobble=2.2, stagger=0.22s, draw=1.4s).
-   t0 pre-seeded at 75% of row sequence so animation is already mid-way
-   when section enters view — top rows appear ~1.5 s after visible. */
+   Triggered when footer enters view (WIIM bottom just reached viewport).
+   No pre-seeding — rows print naturally from bottom to top.
+   Thinner lines (lw=5), slower draw (2.5s/row) for a calm build-up. */
 (function () {
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var section = document.getElementById('why-it-matters');
@@ -158,7 +158,7 @@
 
   var host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
-  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;';
+  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;';
   section.insertBefore(host, section.firstChild);
 
   var wrapEl = section.querySelector('.wrap');
@@ -175,23 +175,24 @@
     dpr = Math.min(devicePixelRatio || 1, 2);
     cv.width = W * dpr; cv.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    rows = []; var gap = 16;
+    rows = []; var gap = 18;
     for (var y = H - 8; y > 16; y -= gap) rows.push(y);
   }
 
   function draw(ts) {
     if (!running) return;
     raf = requestAnimationFrame(draw);
+    if (t0 === null) t0 = ts;
     var elapsed = (ts - t0) / 1000;
     ctx.clearRect(0, 0, W, H);
     for (var i = 0; i < rows.length; i++) {
       var y = rows[i];
-      var prog = Math.min(1, Math.max(0, (elapsed - i * 0.22) / 1.4));
+      var prog = Math.min(1, Math.max(0, (elapsed - i * 0.22) / 2.5));
       if (prog <= 0) continue;
       var xEnd = prog * (W + 40);
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(110,99,87,' + (0.16 + 0.05 * Math.sin(i * 1.7)).toFixed(3) + ')';
-      ctx.lineWidth = 7; ctx.lineCap = 'round';
+      ctx.lineWidth = 5; ctx.lineCap = 'round';
       for (var x = -20; x <= xEnd; x += 14) {
         var yy = y + Math.sin(x * 0.012 + i * 0.9) * 2.2;
         if (x === -20) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
@@ -202,23 +203,19 @@
   }
 
   function start() {
-    if (!running) {
-      shown = false;
-      t0 = performance.now() - rows.length * 0.22 * 0.75 * 1000;
-      running = true;
-      raf = requestAnimationFrame(draw);
-    }
+    if (!running) { t0 = null; shown = false; running = true; raf = requestAnimationFrame(draw); }
   }
   function stop() { running = false; cancelAnimationFrame(raf); }
 
+  /* Observe footer — fires when WIIM's bottom edge reaches the viewport */
+  var trigger = document.querySelector('footer') || section;
   new IntersectionObserver(function (es) {
     es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
-  }, { threshold: 0.05 }).observe(section);
+  }, { threshold: 0 }).observe(trigger);
   document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
   addEventListener('resize', function () { clearTimeout(section._wr); section._wr = setTimeout(build, 200); });
   build();
 })();
-
 /* ===== Print-bead section dividers =====
    Miniaturised version of the hero canvas: 5 bead rows forming left to right,
    looping continuously. No cursor interaction — purely decorative. */
