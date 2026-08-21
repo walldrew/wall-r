@@ -158,7 +158,7 @@
 
   var host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
-  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.6s ease;';
+  host.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;';  /* no fade-in delay */
   section.insertBefore(host, section.firstChild);
 
   var wrapEl = section.querySelector('.wrap');
@@ -184,22 +184,24 @@
     raf = requestAnimationFrame(draw);
     if (t0 === null) t0 = ts;
     var elapsed = (ts - t0) / 1000;
+    /* Scale stagger so full section completes in ~3 s regardless of height */
+    var stagger = Math.min(0.10, 2.2 / Math.max(rows.length - 1, 1));
     ctx.clearRect(0, 0, W, H);
     for (var i = 0; i < rows.length; i++) {
       var y = rows[i];
-      var prog = Math.min(1, Math.max(0, (elapsed - i * 0.22) / 1.4));
+      var prog = Math.min(1, Math.max(0, (elapsed - i * stagger) / 1.0));
       if (prog <= 0) continue;
       var xEnd = prog * (W + 40);
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(110,99,87,' + (0.16 + 0.05 * Math.sin(i * 1.7)).toFixed(3) + ')';
-      ctx.lineWidth = 7; ctx.lineCap = 'round';
+      ctx.strokeStyle = 'rgba(110,99,87,' + (0.13 + 0.06 * Math.sin(i * 1.4)).toFixed(3) + ')';
+      ctx.lineWidth = 6; ctx.lineCap = 'round';
       for (var x = -20; x <= xEnd; x += 14) {
-        var yy = y + Math.sin(x * 0.012 + i * 0.9) * 2.2;
+        var yy = y + Math.sin(x * 0.013 + i * 0.8) * 1.8;
         if (x === -20) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
       }
       ctx.stroke();
     }
-    if (!shown) { shown = true; host.style.opacity = '1'; }
+    shown = true;
   }
 
   function start() { if (!running) { t0 = null; shown = false; running = true; raf = requestAnimationFrame(draw); } }
