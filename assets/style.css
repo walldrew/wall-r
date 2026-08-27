@@ -327,7 +327,7 @@ details.faq p{margin-top:12px}
   .about-frame{animation:drift 9s linear infinite}
   @keyframes drift{to{background-position:0 19px}}
 }
-.gantt{position:relative;display:grid;gap:14px;max-width:420px;margin-top:26px;padding:6px 2px}
+.gantt{position:relative;display:flex;flex-direction:column-reverse;gap:14px;max-width:420px;margin-top:26px;padding:6px 2px}
 .gantt::before{content:"";position:absolute;inset:-6px 0;
   background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6));
   opacity:.35;pointer-events:none}
@@ -343,6 +343,24 @@ details.faq p{margin-top:12px}
 .gantt i:nth-child(2){width:40%;margin-left:42%;background:var(--bronze)}
 .gantt i:nth-child(3){width:38%;margin-left:22%}
 .gantt i:nth-child(4){width:34%;margin-left:6%;background:var(--bronze)}
+
+/* GCS hero: two-column layout (text left, gantt graphic right). Scoped to .page-gcs
+   so it never touches .page-hero on services.html or any other page that reuses it. */
+.page-gcs .page-hero .gcs-hero{display:grid;grid-template-columns:1.35fr 1fr;gap:48px;align-items:center}
+.page-gcs .gcs-hero-graphic{padding-top:38px}
+.page-gcs .gcs-hero-graphic .gantt{max-width:100%;margin-top:0}
+@media(max-width:900px){
+  .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr .8fr;gap:24px}
+  .page-gcs .gcs-hero-graphic{padding-top:20px}
+}
+@media(max-width:700px){
+  .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr}
+  .page-gcs .gcs-hero-graphic{padding-top:0;margin-top:28px;max-width:280px}
+  .page-gcs .gcs-hero-graphic .gantt{max-width:280px}
+}
+@media(max-width:480px){
+  .page-gcs .gcs-hero-graphic{display:none}
+}
 .rise rect{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
 .about-frame{padding:12px;border-radius:22px;
   background:repeating-linear-gradient(180deg,var(--sand) 0 5px,var(--ivory) 5px 19px)}
