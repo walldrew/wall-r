@@ -343,6 +343,21 @@ details.faq p{margin-top:12px}
 .gantt i:nth-child(2){width:40%;margin-left:42%;background:var(--bronze)}
 .gantt i:nth-child(3){width:38%;margin-left:22%}
 .gantt i:nth-child(4){width:34%;margin-left:6%;background:var(--bronze)}
+
+/* GCS hero gantt graphic: mobile-only fix. Desktop math (margin-right:3in,
+   margin-top:-48px, inline on #gcs-gantt in gcs.html) is untouched — Heisenberg
+   confirmed desktop is correct. Below 700px those same margins shrink the box
+   toward 0 width and pin it to the left edge, overlapping the headline. This
+   override neutralizes the desktop-only margin hacks and lets the graphic sit
+   in normal block flow below the text, with a real fixed width. 2026-08-27. */
+@media(max-width:700px){
+  /* !important required: inline style attribute on #gcs-gantt in gcs.html always
+     beats external stylesheet rules regardless of selector specificity, even #id. */
+  #gcs-gantt{margin-top:28px!important;margin-right:auto!important;margin-left:auto!important;max-width:280px!important;width:100%!important}
+}
+@media(max-width:480px){
+  #gcs-gantt{max-width:240px!important;padding:18px 18px 0!important}
+}
 .rise rect{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
 .about-frame{padding:12px;border-radius:22px;
   background:repeating-linear-gradient(180deg,var(--sand) 0 5px,var(--ivory) 5px 19px)}
