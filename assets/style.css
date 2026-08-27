@@ -307,11 +307,13 @@ details.faq p{margin-top:12px}
   .page-projects .kenburns img{animation:kb 28s ease-in-out infinite alternate;
     transform-origin:60% 40%}
   @keyframes kb{from{transform:scale(1)}to{transform:scale(1.09) translate(-2%,1%)}}
-  /* gcs: schedule bars draw in */
+  /* gcs: gantt-style schedule bars draw in, staggered, staircased like real project phases */
   .reveal.in .gantt i{animation:grow 1.1s cubic-bezier(.2,.7,.2,1) forwards}
   .gantt i:nth-child(2){animation-delay:.15s}.gantt i:nth-child(3){animation-delay:.3s}
   .gantt i:nth-child(4){animation-delay:.45s}
   @keyframes grow{to{transform:scaleX(1)}}
+  .reveal.in .gantt::after{animation:todaymark 1.6s ease forwards .7s;opacity:0}
+  @keyframes todaymark{to{opacity:.55}}
   /* architects: the curve breathes (SMIL in the inline svg) */
   /* developers: skyline rises */
   .reveal.in .rise rect{animation:riseup 1s cubic-bezier(.2,.7,.2,1) forwards}
@@ -325,11 +327,22 @@ details.faq p{margin-top:12px}
   .about-frame{animation:drift 9s linear infinite}
   @keyframes drift{to{background-position:0 19px}}
 }
-.gantt{display:grid;gap:10px;max-width:420px;margin-top:26px}
+.gantt{position:relative;display:grid;gap:14px;max-width:420px;margin-top:26px;padding:6px 2px}
+.gantt::before{content:"";position:absolute;inset:-6px 0;
+  background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6));
+  opacity:.35;pointer-events:none}
+.gantt::after{content:"";position:absolute;top:-6px;bottom:-6px;left:70%;width:1px;
+  background:var(--bronze);opacity:.55;pointer-events:none}
+.dark .gantt::before{opacity:.22}
 .gantt i{display:block;height:8px;border-radius:4px;background:var(--sand);
-  transform:scaleX(0);transform-origin:left}
-.gantt i:nth-child(1){width:88%}.gantt i:nth-child(2){width:64%;background:var(--bronze)}
-.gantt i:nth-child(3){width:74%}.gantt i:nth-child(4){width:46%;background:var(--bronze)}
+  transform:scaleX(0);transform-origin:left;position:relative}
+.gantt i::after{content:"";position:absolute;right:-3px;top:50%;width:6px;height:6px;
+  border-radius:50%;background:inherit;transform:translateY(-50%);box-shadow:0 0 0 2px var(--ivory)}
+.dark .gantt i::after{box-shadow:0 0 0 2px var(--choc)}
+.gantt i:nth-child(1){width:42%;margin-left:0}
+.gantt i:nth-child(2){width:40%;margin-left:18%;background:var(--bronze)}
+.gantt i:nth-child(3){width:38%;margin-left:40%}
+.gantt i:nth-child(4){width:34%;margin-left:60%;background:var(--bronze)}
 .rise rect{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
 .about-frame{padding:12px;border-radius:22px;
   background:repeating-linear-gradient(180deg,var(--sand) 0 5px,var(--ivory) 5px 19px)}
