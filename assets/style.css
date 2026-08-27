@@ -346,17 +346,21 @@ details.faq p{margin-top:12px}
 
 /* GCS hero: two-column layout (text left, gantt graphic right, shifted toward the
    text column and raised, matching Heisenberg's approved position). Scoped to
-   .page-gcs so it never touches .page-hero on services.html or any other page. */
-.page-gcs .page-hero .gcs-hero{display:grid;grid-template-columns:1.7fr 1fr;gap:32px;align-items:center}
-.page-gcs .gcs-hero-graphic{padding-top:0;justify-self:start;max-width:300px;align-self:start;margin-top:-8px}
-.page-gcs .gcs-hero-graphic .gantt{max-width:100%;margin-top:0}
+   .page-gcs so it never touches .page-hero on services.html or any other page.
+   IMPORTANT: graphic column must keep width:100% (not justify-self:start alone) —
+   grid items default to stretch, but max-width without an explicit width can
+   collapse to shrink-to-fit content sizing in some engines, which collapses the
+   .gantt bar percentages (they're % of THIS box) down to ~0px. Learned 2026-08-27. */
+.page-gcs .page-hero .gcs-hero{display:grid;grid-template-columns:1.7fr .85fr;gap:32px;align-items:start}
+.page-gcs .gcs-hero-graphic{width:100%;max-width:280px;padding-top:0;margin-top:-8px}
+.page-gcs .gcs-hero-graphic .gantt{width:100%;max-width:100%;margin-top:0}
 @media(max-width:900px){
-  .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr .8fr;gap:24px}
-  .page-gcs .gcs-hero-graphic{max-width:260px}
+  .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr .7fr;gap:24px}
+  .page-gcs .gcs-hero-graphic{max-width:240px}
 }
 @media(max-width:700px){
   .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr}
-  .page-gcs .gcs-hero-graphic{justify-self:start;margin-top:24px;max-width:260px}
+  .page-gcs .gcs-hero-graphic{width:100%;margin-top:24px;max-width:260px}
   .page-gcs .gcs-hero-graphic .gantt{max-width:260px}
 }
 @media(max-width:480px){
