@@ -327,7 +327,7 @@ details.faq p{margin-top:12px}
   .about-frame{animation:drift 9s linear infinite}
   @keyframes drift{to{background-position:0 19px}}
 }
-.gantt{position:relative;display:flex;flex-direction:column-reverse;gap:14px;max-width:420px;margin-top:26px;padding:6px 2px}
+.gantt{position:relative;display:grid;gap:14px;max-width:420px;margin-top:26px;padding:6px 2px}
 .gantt::before{content:"";position:absolute;inset:-6px 0;
   background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6));
   opacity:.35;pointer-events:none}
@@ -343,30 +343,6 @@ details.faq p{margin-top:12px}
 .gantt i:nth-child(2){width:40%;margin-left:42%;background:var(--bronze)}
 .gantt i:nth-child(3){width:38%;margin-left:22%}
 .gantt i:nth-child(4){width:34%;margin-left:6%;background:var(--bronze)}
-
-/* GCS hero: two-column layout (text left, gantt graphic right, shifted toward the
-   text column and raised, matching Heisenberg's approved position). Scoped to
-   .page-gcs so it never touches .page-hero on services.html or any other page.
-   IMPORTANT: graphic column must keep width:100% (not justify-self:start alone) —
-   grid items default to stretch, but max-width without an explicit width can
-   collapse to shrink-to-fit content sizing in some engines, which collapses the
-   .gantt bar percentages (they're % of THIS box) down to ~0px. Learned 2026-08-27. */
-.page-gcs .page-hero .gcs-hero{display:grid;grid-template-columns:1.7fr .85fr;gap:32px;align-items:start}
-.page-gcs .gcs-hero-graphic{width:100%;max-width:280px;padding-top:0;margin-top:-8px}
-.page-gcs .gcs-hero-graphic .gantt{width:100%;max-width:100%;margin-top:0}
-@media(max-width:900px){
-  .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr .7fr;gap:24px}
-  .page-gcs .gcs-hero-graphic{max-width:240px}
-}
-@media(max-width:700px){
-  .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr}
-  .page-gcs .gcs-hero-graphic{width:100%;margin-top:24px;max-width:260px}
-  .page-gcs .gcs-hero-graphic .gantt{max-width:260px}
-}
-@media(max-width:480px){
-  .page-gcs .gcs-hero-graphic{max-width:220px;margin-top:18px}
-  .page-gcs .gcs-hero-graphic .gantt{max-width:220px;gap:10px}
-}
 .rise rect{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
 .about-frame{padding:12px;border-radius:22px;
   background:repeating-linear-gradient(180deg,var(--sand) 0 5px,var(--ivory) 5px 19px)}
