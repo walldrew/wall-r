@@ -344,22 +344,24 @@ details.faq p{margin-top:12px}
 .gantt i:nth-child(3){width:38%;margin-left:22%}
 .gantt i:nth-child(4){width:34%;margin-left:6%;background:var(--bronze)}
 
-/* GCS hero: two-column layout (text left, gantt graphic right). Scoped to .page-gcs
-   so it never touches .page-hero on services.html or any other page that reuses it. */
-.page-gcs .page-hero .gcs-hero{display:grid;grid-template-columns:1.35fr 1fr;gap:48px;align-items:center}
-.page-gcs .gcs-hero-graphic{padding-top:38px}
+/* GCS hero: two-column layout (text left, gantt graphic right, shifted toward the
+   text column and raised, matching Heisenberg's approved position). Scoped to
+   .page-gcs so it never touches .page-hero on services.html or any other page. */
+.page-gcs .page-hero .gcs-hero{display:grid;grid-template-columns:1.7fr 1fr;gap:32px;align-items:center}
+.page-gcs .gcs-hero-graphic{padding-top:0;justify-self:start;max-width:300px;align-self:start;margin-top:-8px}
 .page-gcs .gcs-hero-graphic .gantt{max-width:100%;margin-top:0}
 @media(max-width:900px){
   .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr .8fr;gap:24px}
-  .page-gcs .gcs-hero-graphic{padding-top:20px}
+  .page-gcs .gcs-hero-graphic{max-width:260px}
 }
 @media(max-width:700px){
   .page-gcs .page-hero .gcs-hero{grid-template-columns:1fr}
-  .page-gcs .gcs-hero-graphic{padding-top:0;margin-top:28px;max-width:280px}
-  .page-gcs .gcs-hero-graphic .gantt{max-width:280px}
+  .page-gcs .gcs-hero-graphic{justify-self:start;margin-top:24px;max-width:260px}
+  .page-gcs .gcs-hero-graphic .gantt{max-width:260px}
 }
 @media(max-width:480px){
-  .page-gcs .gcs-hero-graphic{display:none}
+  .page-gcs .gcs-hero-graphic{max-width:220px;margin-top:18px}
+  .page-gcs .gcs-hero-graphic .gantt{max-width:220px;gap:10px}
 }
 .rise rect{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
 .about-frame{padding:12px;border-radius:22px;
