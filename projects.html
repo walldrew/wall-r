@@ -58,16 +58,16 @@
     </div>
   </div>
   <div class="grid g3" style="margin-top:26px">
-    <div class="card reveal"><div class="img-frame" style="margin:-34px -34px 18px"><img
-      src="assets/img/project-1.svg" alt="" style="width:100%"></div>
+    <div class="card reveal"><div class="img-frame img-expand" data-src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1787845048/wallr/projects/prj-feat-img2-6826.jpg" style="margin:-34px -34px 18px;cursor:zoom-in"><img
+      src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1787845048/wallr/projects/prj-feat-img2-6826.jpg" alt="3D printed concrete wall detail, project dossier" style="width:100%"></div>
       <h3>Project dossier</h3><p style="margin-top:8px" class="muted">Placeholder. Specification
       PDF and photo set arriving with the next content drop.</p></div>
-    <div class="card reveal"><div class="img-frame" style="margin:-34px -34px 18px"><img
-      src="assets/img/project-2.svg" alt="" style="width:100%"></div>
+    <div class="card reveal"><div class="img-frame img-expand" data-src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1787845075/wallr/projects/prj-feat-img3-6831.jpg" style="margin:-34px -34px 18px;cursor:zoom-in"><img
+      src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1787845075/wallr/projects/prj-feat-img3-6831.jpg" alt="3D printed concrete wall detail, project dossier" style="width:100%"></div>
       <h3>Project dossier</h3><p style="margin-top:8px" class="muted">Placeholder. Specification
       PDF and photo set arriving with the next content drop.</p></div>
-    <div class="card reveal"><div class="img-frame" style="margin:-34px -34px 18px"><img
-      src="assets/img/project-3.svg" alt="" style="width:100%"></div>
+    <div class="card reveal"><div class="img-frame img-expand" data-src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1787845114/wallr/projects/prj-feat-img4-6877.jpg" style="margin:-34px -34px 18px;cursor:zoom-in"><img
+      src="https://res.cloudinary.com/ufn3pxdn/image/upload/f_auto,q_auto/v1787845114/wallr/projects/prj-feat-img4-6877.jpg" alt="3D printed concrete wall detail, project dossier" style="width:100%"></div>
       <h3>Project dossier</h3><p style="margin-top:8px" class="muted">Placeholder. Specification
       PDF and photo set arriving with the next content drop.</p></div>
   </div>
@@ -124,4 +124,20 @@
   </div>
 </div></footer>
 <script src="assets/site.js"></script>
+
+<!-- Lightbox -->
+<div id="glb" onclick="if(event.target===this)closeLb()" role="dialog" aria-modal="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9000;align-items:center;justify-content:center;cursor:zoom-out">
+  <button id="glb-close" onclick="closeLb()" aria-label="Close" style="position:absolute;top:18px;right:22px;background:none;border:none;color:#fff;font-size:36px;cursor:pointer;line-height:1;opacity:.8">&times;</button>
+  <img id="glb-img" src="" alt="" style="max-width:92vw;max-height:88vh;border-radius:4px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.6)">
+</div>
+<script>
+function openLb(src,alt){var lb=document.getElementById('glb');document.getElementById('glb-img').src=src;document.getElementById('glb-img').alt=alt||'';lb.style.display='flex';document.body.style.overflow='hidden';}
+function closeLb(){document.getElementById('glb').style.display='none';document.body.style.overflow='';}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.img-expand[data-src]').forEach(function(el){
+    el.addEventListener('click',function(){openLb(el.dataset.src,el.querySelector('img')?el.querySelector('img').alt:'');});
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
+});
+</script>
 </body></html>
