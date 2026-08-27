@@ -8,7 +8,7 @@ generated: 2026-07-04
 ---
 # For GC's — A Wall Scope That Shows Up On Schedule
 
-Printed walls as a defined subcontract: engineered, insured, and sequenced into your critical path, with a crew of two to three.
+Printed walls as a defined subcontract: engineered, insured, and sequenced into your critical path.
 
 ## What Wallr Delivers
 
