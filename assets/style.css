@@ -331,7 +331,7 @@ details.faq p{margin-top:12px}
 .gantt::before{content:"";position:absolute;inset:-6px 0;
   background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6));
   opacity:.35;pointer-events:none}
-.gantt::after{content:"";position:absolute;top:-6px;bottom:-6px;left:70%;width:1px;
+.gantt::after{content:"";position:absolute;top:-6px;bottom:-6px;left:30%;width:1px;
   background:var(--bronze);opacity:.55;pointer-events:none}
 .dark .gantt::before{opacity:.22}
 .gantt i{display:block;height:8px;border-radius:4px;background:var(--sand);
@@ -339,10 +339,10 @@ details.faq p{margin-top:12px}
 .gantt i::after{content:"";position:absolute;right:-3px;top:50%;width:6px;height:6px;
   border-radius:50%;background:inherit;transform:translateY(-50%);box-shadow:0 0 0 2px var(--ivory)}
 .dark .gantt i::after{box-shadow:0 0 0 2px var(--choc)}
-.gantt i:nth-child(1){width:42%;margin-left:0}
-.gantt i:nth-child(2){width:40%;margin-left:18%;background:var(--bronze)}
-.gantt i:nth-child(3){width:38%;margin-left:40%}
-.gantt i:nth-child(4){width:34%;margin-left:60%;background:var(--bronze)}
+.gantt i:nth-child(1){width:42%;margin-left:58%}
+.gantt i:nth-child(2){width:40%;margin-left:42%;background:var(--bronze)}
+.gantt i:nth-child(3){width:38%;margin-left:22%}
+.gantt i:nth-child(4){width:34%;margin-left:6%;background:var(--bronze)}
 .rise rect{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0)}
 .about-frame{padding:12px;border-radius:22px;
   background:repeating-linear-gradient(180deg,var(--sand) 0 5px,var(--ivory) 5px 19px)}
